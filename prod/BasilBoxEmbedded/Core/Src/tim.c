@@ -22,6 +22,7 @@
 
 /* USER CODE BEGIN 0 */
 #include "led.h"
+#include "button.h"
 /* USER CODE END 0 */
 
 TIM_HandleTypeDef htim11;
@@ -150,6 +151,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance == TIM11) //1ms timer
 	{
 		led_timer_1ms();
+		button_timer_1ms();
 	}
 }
 /* USER CODE END 1 */
