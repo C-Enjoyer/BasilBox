@@ -69,5 +69,8 @@ void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 2 */
-
+GPIO_PinState gpio_getPinState(bool on)
+{
+	return (on) ? (GPIO_PIN_SET) : (GPIO_PIN_RESET);
+}
 /* USER CODE END 2 */
