@@ -1,9 +1,9 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    gpio.h
+  * @file    tim.h
   * @brief   This file contains all the function prototypes for
-  *          the gpio.c file
+  *          the tim.c file
   ******************************************************************************
   * @attention
   *
@@ -18,8 +18,8 @@
   */
 /* USER CODE END Header */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __GPIO_H__
-#define __GPIO_H__
+#ifndef __TIM_H__
+#define __TIM_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,18 +32,31 @@ extern "C" {
 #include <stdbool.h>
 /* USER CODE END Includes */
 
+extern TIM_HandleTypeDef htim11;
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
 
-void MX_GPIO_Init(void);
+void MX_TIM11_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-GPIO_PinState gpio_getPinState(bool on);
+typedef struct tim_scal
+{
+	uint32_t cnt, max;
+}tim_scal_t;
+
+void tim_init(void);
+void tim_scalStart(tim_scal_t* scal, uint32_t time);
+void tim_scalStop(tim_scal_t* scal);
+void tim_scalRestart(tim_scal_t* scal);
+bool tim_scalCount(tim_scal_t* scal);
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
 }
 #endif
-#endif /*__ GPIO_H__ */
+
+#endif /* __TIM_H__ */
 
