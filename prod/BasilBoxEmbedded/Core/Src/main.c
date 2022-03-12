@@ -26,6 +26,7 @@
 /* USER CODE BEGIN Includes */
 #include "led.h"
 #include "filter_fan.h"
+#include "volreg.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -89,8 +90,10 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_TIM11_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   tim_init();
+  volreg_init();
   led_blink(200, 800);
   filter_fan_set(filter_fan_off);
   /* USER CODE END 2 */

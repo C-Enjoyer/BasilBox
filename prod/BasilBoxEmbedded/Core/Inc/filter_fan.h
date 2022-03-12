@@ -19,6 +19,6 @@ typedef enum filter_fan_state
 	filter_fan_max
 }filter_fan_state_t;
 
-bool filter_fan_set(filter_fan_state_t newState);
+void filter_fan_set(filter_fan_state_t newState);
 
 #endif /* INC_FILTER_FAN_H_ */

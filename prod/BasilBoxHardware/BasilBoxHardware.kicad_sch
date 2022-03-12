@@ -24,6 +24,18 @@
     )
   )
 
+  (sheet (at 87.63 25.4) (size 54.61 21.59) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid) (color 0 0 0 0))
+    (fill (color 0 0 0 0.0000))
+    (uuid cbb2e553-9a84-4a8e-b29e-b27d4b1bded5)
+    (property "Sheet name" "led_light_control" (id 0) (at 87.63 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheet file" "led_light_control.kicad_sch" (id 1) (at 87.63 47.5746 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+  )
+
   (sheet (at 105.41 68.58) (size 63.5 35.56) (fields_autoplaced)
     (stroke (width 0.1524) (type solid) (color 0 0 0 0))
     (fill (color 0 0 0 0.0000))
@@ -40,6 +52,7 @@
     (path "/" (page "1"))
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35" (page "2"))
     (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65" (page "3"))
+    (path "/cbb2e553-9a84-4a8e-b29e-b27d4b1bded5" (page "4"))
   )
 
   (symbol_instances
@@ -53,6 +66,9 @@
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/5b6f794a-46eb-4f43-bd8a-950ae1fcf440"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/cbb2e553-9a84-4a8e-b29e-b27d4b1bded5/5ca767fe-178d-4bd1-9a62-3311f61d1ae1"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/763480e7-3762-4f16-a047-9f69445027bc"
@@ -79,6 +95,12 @@
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/d64e8d8d-dbec-4d37-a484-487b7a33ba5d"
       (reference "#PWR?") (unit 1) (value "+3.3V") (footprint "")
     )
+    (path "/cbb2e553-9a84-4a8e-b29e-b27d4b1bded5/df0db37c-671d-4951-9bb8-c8720b5d2fa0"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/cbb2e553-9a84-4a8e-b29e-b27d4b1bded5/e662d46e-cffe-4f33-ad52-44bb9b3a93f0"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/f3b5e02f-6d92-481a-bdce-402ac6e26a30"
       (reference "#PWR?") (unit 1) (value "+3.3V") (footprint "")
     )
@@ -103,8 +125,14 @@
     (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/df4c09a3-e9fb-4c79-b7fc-2c8d98c645d3"
       (reference "U3") (unit 1) (value "DEBO_Relais") (footprint "")
     )
+    (path "/cbb2e553-9a84-4a8e-b29e-b27d4b1bded5/bfe2e29b-66a8-4293-90aa-30815a841c98"
+      (reference "U4") (unit 1) (value "DEBO_Mosfet") (footprint "")
+    )
     (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/ced067df-3e90-48f8-99c9-9b05a140c33a"
       (reference "U4") (unit 1) (value "FAN") (footprint "")
+    )
+    (path "/cbb2e553-9a84-4a8e-b29e-b27d4b1bded5/078d5574-5938-4d85-bad2-574ef53a191f"
+      (reference "U5") (unit 1) (value "LED_LIGHT") (footprint "")
     )
   )
 )

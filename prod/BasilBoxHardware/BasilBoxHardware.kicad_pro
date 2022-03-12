@@ -328,6 +328,10 @@
     [
       "3532dee9-6e3a-45a8-875d-a70e3d243b65",
       "filter_fan_control"
+    ],
+    [
+      "cbb2e553-9a84-4a8e-b29e-b27d4b1bded5",
+      "led_light_control"
     ]
   ],
   "text_variables": {}
