@@ -43,9 +43,6 @@
   )
 
   (symbol_instances
-    (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/2735ea34-8d2b-4d9c-9c15-dd6d1792b92b"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
     (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/29ad90c0-6e19-4c94-bc20-d767d22d513c"
       (reference "#PWR?") (unit 1) (value "+5V") (footprint "")
     )
@@ -58,22 +55,10 @@
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/5b6f794a-46eb-4f43-bd8a-950ae1fcf440"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
-    (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/5bd5bf41-a1e3-4f79-b7ba-125c30c175bf"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/671ea0cc-375e-4e5c-a94a-aa1b387207a6"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/7239021d-aef7-43fa-a32c-3abdd8987533"
-      (reference "#PWR?") (unit 1) (value "+5V") (footprint "")
-    )
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/763480e7-3762-4f16-a047-9f69445027bc"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/880b5b4e-4250-47d0-ab04-ae41ae8305a9"
-      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
-    )
-    (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/91e10978-6b9a-4275-9180-4a38cb42f2a2"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/aebc5191-f7c4-4f96-ab63-b7e303254d6e"
@@ -91,9 +76,6 @@
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/bbc262cf-e049-4ff8-8a6a-da32c0681e4e"
       (reference "#PWR?") (unit 1) (value "+5V") (footprint "")
     )
-    (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/d2171f8b-0f31-49ce-8cc8-209d48693a5e"
-      (reference "#PWR?") (unit 1) (value "+5V") (footprint "")
-    )
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/d64e8d8d-dbec-4d37-a484-487b7a33ba5d"
       (reference "#PWR?") (unit 1) (value "+3.3V") (footprint "")
     )
@@ -102,9 +84,6 @@
     )
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/757bccdd-3588-46c6-9c33-f7bda723bf63"
       (reference "B1") (unit 1) (value "onboard_button") (footprint "")
-    )
-    (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/e481c0c3-39b7-4074-ba95-2e36a52e2aee"
-      (reference "J1") (unit 1) (value "FAN") (footprint "")
     )
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/f1ce0189-a8d5-489b-a37d-129d03d53ff4"
       (reference "LD1") (unit 1) (value "onboard_led") (footprint "")
@@ -124,11 +103,8 @@
     (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/df4c09a3-e9fb-4c79-b7fc-2c8d98c645d3"
       (reference "U3") (unit 1) (value "DEBO_Relais") (footprint "")
     )
-    (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/991fbb04-086a-4865-a7e3-e9a5f0312106"
-      (reference "U5") (unit 1) (value "DEBO_Mosfet") (footprint "")
-    )
-    (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/5c8fe58c-0779-468f-bd85-8ae1654eda42"
-      (reference "U6") (unit 1) (value "DEBO_Mosfet") (footprint "")
+    (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/ced067df-3e90-48f8-99c9-9b05a140c33a"
+      (reference "U4") (unit 1) (value "FAN") (footprint "")
     )
   )
 )
