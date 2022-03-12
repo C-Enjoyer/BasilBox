@@ -18,7 +18,7 @@ filter_fan_state_t filter_fan_state = filter_fan_off;
 bool filter_fan_topPinLookUp[filter_fan_max] = {[filter_fan_off] = false, [filter_fan_lvl1] = true, [filter_fan_lvl2] = true};
 bool filter_fan_botPinLookUp[filter_fan_max] = {[filter_fan_off] = false, [filter_fan_lvl1] = false, [filter_fan_lvl2] = true};
 
-bool filter_fan_set(filter_fan_state_t newState)
+void filter_fan_set(filter_fan_state_t newState)
 {
 	HAL_GPIO_WritePin(FILTER_FAN_TOP_PORT, FILTER_FAN_TOP_PIN, gpio_getPinState(filter_fan_topPinLookUp[newState]));
 

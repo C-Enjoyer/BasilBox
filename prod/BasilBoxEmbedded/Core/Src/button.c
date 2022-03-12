@@ -10,6 +10,7 @@
 #include "tim.h"
 #include "led.h"
 #include "filter_fan.h"
+#include "led_light.h"
 
 #define BUTTON_PORT 	B1_GPIO_Port
 #define BUTTON_PIN 	B1_Pin
