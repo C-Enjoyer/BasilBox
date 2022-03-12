@@ -9,6 +9,7 @@
 #include "gpio.h"
 #include "tim.h"
 #include "led.h"
+#include "filter_fan.h"
 
 #define BUTTON_PORT 	B1_GPIO_Port
 #define BUTTON_PIN 	B1_Pin

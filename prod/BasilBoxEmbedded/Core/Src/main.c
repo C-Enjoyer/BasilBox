@@ -25,6 +25,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "led.h"
+#include "filter_fan.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -90,6 +91,8 @@ int main(void)
   MX_TIM11_Init();
   /* USER CODE BEGIN 2 */
   tim_init();
+  led_blink(200, 800);
+  filter_fan_set(filter_fan_off);
   /* USER CODE END 2 */
 
   /* Infinite loop */
