@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -89,9 +90,12 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-  MX_TIM11_Init();
+  MX_DMA_Init();
   MX_TIM3_Init();
+  MX_USART1_UART_Init();
+  MX_TIM11_Init();
   /* USER CODE BEGIN 2 */
+  usart_init();
   tim_init();
   volreg_init();
   led_blink(200, 800);
@@ -102,6 +106,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  usart_mainLoop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

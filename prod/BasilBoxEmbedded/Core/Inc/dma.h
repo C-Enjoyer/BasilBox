@@ -1,9 +1,9 @@
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file    usart.h
+  * @file    dma.h
   * @brief   This file contains all the function prototypes for
-  *          the usart.c file
+  *          the dma.c file
   ******************************************************************************
   * @attention
   *
@@ -18,8 +18,8 @@
   */
 /* USER CODE END Header */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __USART_H__
-#define __USART_H__
+#ifndef __DMA_H__
+#define __DMA_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,38 +28,25 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+/* DMA memory to memory transfer handles -------------------------------------*/
+
 /* USER CODE BEGIN Includes */
-#define USART1_RX_SIZE	512
-#define USART1_TX_SIZE	512
+
 /* USER CODE END Includes */
-
-extern UART_HandleTypeDef huart1;
-
-extern UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
 
-void MX_USART1_UART_Init(void);
-void MX_USART2_UART_Init(void);
+void MX_DMA_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-void usart_init(void);
-void usart_mainLoop(void);
-void usart1_transmit(uint8_t* data, uint16_t num);
-void usart1_init(void);
-void usart1_deInit(void);
-void usart1_reInit(void);
-uint16_t usart_ringInc(uint16_t num, uint16_t max);
-uint16_t usart_ringIncBy(uint16_t num, uint16_t inc, uint16_t max);
-uint16_t usart_ringLen(uint16_t head, uint16_t tail, uint16_t max);
-uint16_t usart_bufLen(uint16_t head, uint16_t tail, uint16_t max);
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __USART_H__ */
+#endif /* __DMA_H__ */
 
