@@ -23,6 +23,8 @@
 /* USER CODE BEGIN 0 */
 #include "com.h"
 
+bool usart_initialized = false;
+
 uint8_t usart1_rxDmaBuffer[USART1_RX_SIZE] = {0};
 uint8_t usart1_txBuffer[USART1_TX_SIZE] = {0};
 uint16_t usart1_rxTail = 0;
@@ -46,7 +48,13 @@ void MX_USART1_UART_Init(void)
 {
 
   /* USER CODE BEGIN USART1_Init 0 */
-
+	if(!usart_initialized)
+	{
+		usart_initialized = true;
+#ifndef DEBUG
+		HAL_Delay(7000);
+#endif
+	}
   /* USER CODE END USART1_Init 0 */
 
   /* USER CODE BEGIN USART1_Init 1 */
