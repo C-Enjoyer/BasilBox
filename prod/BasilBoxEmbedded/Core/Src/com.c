@@ -11,9 +11,9 @@
 
 uint16_t com_handleBuffer(uint8_t* buffer, uint16_t bufferSize, uint16_t head, uint16_t tail)
 {
-	char bIdiot[] = "You are a bloody idiot!\r\n";
-	char fIdiot[] = "You are a fucking idiot!\r\n";
-	char invalid[] = "Invalid character\r\n";
+	char bIdiot[] = "You are a bloody idiot!\n";
+	char fIdiot[] = "You are a fucking idiot!\n";
+	char invalid[] = "Invalid character\n";
 
 	switch(buffer[tail])
 	{

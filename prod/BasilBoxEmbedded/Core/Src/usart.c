@@ -267,14 +267,16 @@ void usart1_transmit(uint8_t* data, uint16_t num)
 {
 	for(uint16_t i = 0; i < num ; i++)
 	{
-		if(usart_ringInc(usart1_txHead, USART1_TX_SIZE) == usart1_txTail) // head hitting tail
+		usart1_txBuffer[usart1_txHead] = data[i];
+
+		uint16_t nextHead = usart_ringInc(usart1_txHead, USART1_TX_SIZE);
+
+		if(nextHead == usart1_txTail) // head hitting tail
 		{
 			return;
 		}
 
-		usart1_txHead = usart_ringInc(usart1_txHead, USART1_TX_SIZE);
-
-		usart1_txBuffer[usart1_txHead] = data[i];
+		usart1_txHead = nextHead;
 	}
 }
 
