@@ -55,6 +55,7 @@ uint16_t usart_ringInc(uint16_t num, uint16_t max);
 uint16_t usart_ringIncBy(uint16_t num, uint16_t inc, uint16_t max);
 uint16_t usart_ringLen(uint16_t head, uint16_t tail, uint16_t max);
 uint16_t usart_bufLen(uint16_t head, uint16_t tail, uint16_t max);
+void usart_ringToBuf(uint8_t* buf, uint16_t len, uint8_t* ring, uint16_t start, uint16_t max);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

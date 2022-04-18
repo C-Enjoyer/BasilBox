@@ -28,6 +28,7 @@
 #include "led.h"
 #include "filter_fan.h"
 #include "volreg.h"
+#include "com.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -95,6 +96,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM11_Init();
   /* USER CODE BEGIN 2 */
+  com_init();
   usart_init();
   tim_init();
   volreg_init();
@@ -107,6 +109,7 @@ int main(void)
   while (1)
   {
 	  usart_mainLoop();
+	  com_mainLoop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -20,13 +20,13 @@ namespace BasilBoxGUI
         private int serialPortBaudrate = 115200;
         private int serialWriteTimeout = 250;
         private int serialReadTimeout = 250;
-        private string pingWrite = "f";
-        private string pingRead = "You are a fucking idiot!";
         private bool pingSuccess = false;
 
         private Timer autoConnectTimer;
         private bool autoConnectTimerRunning = false;
         private int autoConnectTimerMs = Timeout.Infinite;
+
+        public MessageHandler messageHandler;
         public COM()
         {
             serialPort = new SafeSerialPort(serialPortName, serialPortBaudrate, Parity.None, 8, StopBits.One);
@@ -37,6 +37,8 @@ namespace BasilBoxGUI
             serialPort.ReadTimeout = serialReadTimeout;
 
             autoConnectTimer = new Timer(autoConnectTimerEvent, null, Timeout.Infinite, Timeout.Infinite);
+
+            messageHandler = new MessageHandler();
         }
 
         public delegate void ConnectionStateChangedEventHandler(object sender, EventHandler e);
@@ -87,7 +89,7 @@ namespace BasilBoxGUI
         private bool ping()
         {
             pingSuccess = false;
-            write(pingWrite);
+            write(messageHandler.GetPingMessage());
             Thread.Sleep(serialWriteTimeout + serialReadTimeout);
 
             return pingSuccess;
@@ -107,6 +109,14 @@ namespace BasilBoxGUI
                 return;
             }
             serialPort.Write(data);
+        }
+        public void write(byte[] data)
+        {
+            if (checkOpen() == ConnectionState.NotOpened)
+            {
+                return;
+            }
+            serialPort.Write(data, 0, data.Length);
         }
         public ConnectionState checkState()
         {
@@ -129,12 +139,11 @@ namespace BasilBoxGUI
         public void received(object sender, SerialDataReceivedEventArgs e)
         {
             Thread.Sleep(serialReadTimeout);
-            string line = serialPort.ReadLine();
+            byte[] buffer = new byte[serialPort.BytesToRead];
             
-            if(line == pingRead)
-            {
-                pingSuccess = true;
-            }
+            serialPort.Read(buffer, 0, serialPort.BytesToRead);
+            messageHandler.Handle(buffer);
+            pingSuccess = messageHandler.GetPingFlag();
         }
         public enum ConnectionState
         {

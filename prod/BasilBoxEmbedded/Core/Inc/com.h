@@ -10,8 +10,14 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "pb_encode.h"
+#include "pb_decode.h"
+#include "messages.pb.h"
 
+void com_init(void);
+void com_mainLoop(void);
 uint16_t com_handleBuffer(uint8_t* buffer, uint16_t bufferSize, uint16_t head, uint16_t tail);
+void com_sendMessage(BasilMessage_MessageType messageType, void* message);
 void com_transmit(uint8_t* buffer, uint16_t num);
 void com_transmitString(char* string);
 

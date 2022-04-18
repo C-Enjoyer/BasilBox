@@ -273,7 +273,7 @@ void usart1_transmit(uint8_t* data, uint16_t num)
 
 		if(nextHead == usart1_txTail) // head hitting tail
 		{
-			return;
+			Error_Handler(); //TODO: handle Error
 		}
 
 		usart1_txHead = nextHead;
@@ -316,6 +316,25 @@ uint16_t usart_ringLen(uint16_t head, uint16_t tail, uint16_t max)
 uint16_t usart_bufLen(uint16_t head, uint16_t tail, uint16_t max)
 {
 	return (head >= tail) ? (head - tail) : (max - tail);
+}
+
+void usart_ringToBuf(uint8_t* buf, uint16_t len, uint8_t* ring, uint16_t start, uint16_t max)
+{
+	if(start >= max || len > max)
+	{
+		Error_Handler(); //TODO: handle Error
+	}
+
+	if(start + len < max)
+	{
+		memcpy(buf, &ring[start], len);
+	}
+	else
+	{
+		uint32_t len1 = max - start;
+		memcpy(buf, &ring[start], len1);
+		memcpy(buf, ring, len - len1);
+	}
 }
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)

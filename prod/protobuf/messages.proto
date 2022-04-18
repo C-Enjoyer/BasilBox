@@ -1,0 +1,19 @@
+syntax = "proto2";
+
+message InfoMessage
+{
+    optional int32 pingId = 1;
+}
+
+message BasilMessage
+{
+	enum MessageType
+	{
+		noMessageType = 0;
+		infoMessageType = 1;
+	}
+	oneof message
+	{
+		InfoMessage infoMessage = 1;
+	}
+}
