@@ -1,28 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BasilBoxGUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
+
     public partial class MainWindow : Window
     {
+        private Dictionary<COM.ConnectionState, string> connectionStateDict = new Dictionary<COM.ConnectionState, string>
+        {
+            {COM.ConnectionState.NotOpened, "Not connected"},
+            {COM.ConnectionState.Opened, "Opened"},
+            {COM.ConnectionState.Connected, "Connected"}
+        };
+        private Dictionary<COM.ConnectionState, SolidColorBrush> connectionStateCol = new Dictionary<COM.ConnectionState, SolidColorBrush>
+        {
+            {COM.ConnectionState.NotOpened, Brushes.Red},
+            {COM.ConnectionState.Opened, Brushes.Orange},
+            {COM.ConnectionState.Connected, Brushes.Green}
+        };
+
         public MainWindow()
         {
             InitializeComponent();
         }
+
+        public void SetConnectionState(COM.ConnectionState connectionState)
+        {
+            txtConnectionState.Text = connectionStateDict[connectionState];
+            txtConnectionState.Background = connectionStateCol[connectionState];
+        }
+
     }
 }

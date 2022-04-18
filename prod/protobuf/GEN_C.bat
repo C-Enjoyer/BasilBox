@@ -1,0 +1,1 @@
+C\protoc.exe --proto_path=..\ --nanopb_out=..\BasilBoxEmbedded\Drivers\protobuf messages.proto
