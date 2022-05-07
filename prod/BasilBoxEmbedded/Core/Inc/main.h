@@ -64,6 +64,8 @@ void Error_Handler(void);
 #define FILTER_FAN_TOP_GPIO_Port GPIOC
 #define FILTER_FAN_BOT_Pin GPIO_PIN_1
 #define FILTER_FAN_BOT_GPIO_Port GPIOC
+#define SDIO_DETECT_Pin GPIO_PIN_2
+#define SDIO_DETECT_GPIO_Port GPIOC
 #define USART_TX_Pin GPIO_PIN_2
 #define USART_TX_GPIO_Port GPIOA
 #define USART_RX_Pin GPIO_PIN_3

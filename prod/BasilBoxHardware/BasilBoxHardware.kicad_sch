@@ -12,6 +12,18 @@
   )
 
 
+  (sheet (at 152.4 25.4) (size 59.69 21.59) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid) (color 0 0 0 0))
+    (fill (color 0 0 0 0.0000))
+    (uuid 19babd50-6c56-4c8a-b536-ffdb1164a3d1)
+    (property "Sheet name" "sd_card" (id 0) (at 152.4 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheet file" "sd_card.kicad_sch" (id 1) (at 152.4 47.5746 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+  )
+
   (sheet (at 24.13 25.4) (size 54.61 21.59) (fields_autoplaced)
     (stroke (width 0.1524) (type solid) (color 0 0 0 0))
     (fill (color 0 0 0 0.0000))
@@ -53,9 +65,13 @@
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35" (page "2"))
     (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65" (page "3"))
     (path "/cbb2e553-9a84-4a8e-b29e-b27d4b1bded5" (page "4"))
+    (path "/19babd50-6c56-4c8a-b536-ffdb1164a3d1" (page "5"))
   )
 
   (symbol_instances
+    (path "/19babd50-6c56-4c8a-b536-ffdb1164a3d1/0ec3cd0a-9710-424a-9ec8-7847886a3093"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
     (path "/3532dee9-6e3a-45a8-875d-a70e3d243b65/29ad90c0-6e19-4c94-bc20-d767d22d513c"
       (reference "#PWR?") (unit 1) (value "+5V") (footprint "")
     )
@@ -70,6 +86,9 @@
     )
     (path "/cbb2e553-9a84-4a8e-b29e-b27d4b1bded5/5ca767fe-178d-4bd1-9a62-3311f61d1ae1"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/19babd50-6c56-4c8a-b536-ffdb1164a3d1/6057585b-e475-46e1-a83e-9e7c1eb356f5"
+      (reference "#PWR?") (unit 1) (value "+3V3") (footprint "")
     )
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/763480e7-3762-4f16-a047-9f69445027bc"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
@@ -95,10 +114,16 @@
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/d64e8d8d-dbec-4d37-a484-487b7a33ba5d"
       (reference "#PWR?") (unit 1) (value "+3.3V") (footprint "")
     )
+    (path "/19babd50-6c56-4c8a-b536-ffdb1164a3d1/d9fc69c3-8f6f-47fa-a8ae-518114134d7e"
+      (reference "#PWR?") (unit 1) (value "+3V3") (footprint "")
+    )
     (path "/cbb2e553-9a84-4a8e-b29e-b27d4b1bded5/df0db37c-671d-4951-9bb8-c8720b5d2fa0"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
     (path "/cbb2e553-9a84-4a8e-b29e-b27d4b1bded5/e662d46e-cffe-4f33-ad52-44bb9b3a93f0"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/19babd50-6c56-4c8a-b536-ffdb1164a3d1/e7177af8-13bf-49fe-b970-9662979eb73a"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
     (path "/de8a0f80-4694-4215-a4c7-c16e58e1df35/f3b5e02f-6d92-481a-bdce-402ac6e26a30"
@@ -133,6 +158,9 @@
     )
     (path "/cbb2e553-9a84-4a8e-b29e-b27d4b1bded5/078d5574-5938-4d85-bad2-574ef53a191f"
       (reference "U5") (unit 1) (value "LED_LIGHT") (footprint "")
+    )
+    (path "/19babd50-6c56-4c8a-b536-ffdb1164a3d1/c9739bd7-ae15-4e44-87fa-6097ebdd34a1"
+      (reference "U5") (unit 1) (value "SD_Demo_Board") (footprint "")
     )
   )
 )
