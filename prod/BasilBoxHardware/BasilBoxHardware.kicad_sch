@@ -160,7 +160,7 @@
       (reference "U5") (unit 1) (value "LED_LIGHT") (footprint "")
     )
     (path "/19babd50-6c56-4c8a-b536-ffdb1164a3d1/c9739bd7-ae15-4e44-87fa-6097ebdd34a1"
-      (reference "U?") (unit 1) (value "SD_Demo_Board") (footprint "")
+      (reference "U5") (unit 1) (value "SD_Demo_Board") (footprint "")
     )
   )
 )
