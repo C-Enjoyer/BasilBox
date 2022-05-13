@@ -35,6 +35,8 @@ extern "C" {
 extern RTC_HandleTypeDef hrtc;
 
 /* USER CODE BEGIN Private defines */
+#define RTC_TS_STRING_SIZE	(17 + 1) //hh:mm:ss DD.MM.YY
+
 typedef struct rtc_time
 {
 	uint8_t hour, min, sec;

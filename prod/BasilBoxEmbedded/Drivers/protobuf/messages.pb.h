@@ -19,6 +19,18 @@ typedef enum _BasilMessage_MessageType {
 typedef struct _InfoMessage { 
     bool has_pingId;
     int32_t pingId; 
+    bool has_tsSec;
+    uint32_t tsSec; 
+    bool has_tsMin;
+    uint32_t tsMin; 
+    bool has_tsHour;
+    uint32_t tsHour; 
+    bool has_tsDay;
+    uint32_t tsDay; 
+    bool has_tsMonth;
+    uint32_t tsMonth; 
+    bool has_tsYear;
+    uint32_t tsYear; 
 } InfoMessage;
 
 typedef struct _BasilMessage { 
@@ -40,18 +52,30 @@ extern "C" {
 #endif
 
 /* Initializer values for message structs */
-#define InfoMessage_init_default                 {false, 0}
+#define InfoMessage_init_default                 {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define BasilMessage_init_default                {0, {InfoMessage_init_default}}
-#define InfoMessage_init_zero                    {false, 0}
+#define InfoMessage_init_zero                    {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define BasilMessage_init_zero                   {0, {InfoMessage_init_zero}}
 
 /* Field tags (for use in manual encoding/decoding) */
 #define InfoMessage_pingId_tag                   1
+#define InfoMessage_tsSec_tag                    2
+#define InfoMessage_tsMin_tag                    3
+#define InfoMessage_tsHour_tag                   4
+#define InfoMessage_tsDay_tag                    5
+#define InfoMessage_tsMonth_tag                  6
+#define InfoMessage_tsYear_tag                   7
 #define BasilMessage_infoMessage_tag             1
 
 /* Struct field encoding specification for nanopb */
 #define InfoMessage_FIELDLIST(X, a) \
-X(a, STATIC,   OPTIONAL, INT32,    pingId,            1)
+X(a, STATIC,   OPTIONAL, INT32,    pingId,            1) \
+X(a, STATIC,   OPTIONAL, UINT32,   tsSec,             2) \
+X(a, STATIC,   OPTIONAL, UINT32,   tsMin,             3) \
+X(a, STATIC,   OPTIONAL, UINT32,   tsHour,            4) \
+X(a, STATIC,   OPTIONAL, UINT32,   tsDay,             5) \
+X(a, STATIC,   OPTIONAL, UINT32,   tsMonth,           6) \
+X(a, STATIC,   OPTIONAL, UINT32,   tsYear,            7)
 #define InfoMessage_CALLBACK NULL
 #define InfoMessage_DEFAULT NULL
 
@@ -69,8 +93,8 @@ extern const pb_msgdesc_t BasilMessage_msg;
 #define BasilMessage_fields &BasilMessage_msg
 
 /* Maximum encoded size of messages (where known) */
-#define BasilMessage_size                        13
-#define InfoMessage_size                         11
+#define BasilMessage_size                        49
+#define InfoMessage_size                         47
 
 #ifdef __cplusplus
 } /* extern "C" */

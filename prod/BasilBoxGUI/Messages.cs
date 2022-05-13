@@ -22,14 +22,16 @@ public static partial class MessagesReflection {
   static MessagesReflection() {
     byte[] descriptorData = global::System.Convert.FromBase64String(
         string.Concat(
-          "Cg5tZXNzYWdlcy5wcm90byIdCgtJbmZvTWVzc2FnZRIOCgZwaW5nSWQYASAB",
-          "KAUidQoMQmFzaWxNZXNzYWdlEiMKC2luZm9NZXNzYWdlGAEgASgLMgwuSW5m",
-          "b01lc3NhZ2VIACI1CgtNZXNzYWdlVHlwZRIRCg1ub01lc3NhZ2VUeXBlEAAS",
-          "EwoPaW5mb01lc3NhZ2VUeXBlEAFCCQoHbWVzc2FnZQ=="));
+          "Cg5tZXNzYWdlcy5wcm90byJ7CgtJbmZvTWVzc2FnZRIOCgZwaW5nSWQYASAB",
+          "KAUSDQoFdHNTZWMYAiABKA0SDQoFdHNNaW4YAyABKA0SDgoGdHNIb3VyGAQg",
+          "ASgNEg0KBXRzRGF5GAUgASgNEg8KB3RzTW9udGgYBiABKA0SDgoGdHNZZWFy",
+          "GAcgASgNInUKDEJhc2lsTWVzc2FnZRIjCgtpbmZvTWVzc2FnZRgBIAEoCzIM",
+          "LkluZm9NZXNzYWdlSAAiNQoLTWVzc2FnZVR5cGUSEQoNbm9NZXNzYWdlVHlw",
+          "ZRAAEhMKD2luZm9NZXNzYWdlVHlwZRABQgkKB21lc3NhZ2U="));
     descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
         new pbr::FileDescriptor[] { },
         new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-          new pbr::GeneratedClrTypeInfo(typeof(global::InfoMessage), global::InfoMessage.Parser, new[]{ "PingId" }, null, null, null, null),
+          new pbr::GeneratedClrTypeInfo(typeof(global::InfoMessage), global::InfoMessage.Parser, new[]{ "PingId", "TsSec", "TsMin", "TsHour", "TsDay", "TsMonth", "TsYear" }, null, null, null, null),
           new pbr::GeneratedClrTypeInfo(typeof(global::BasilMessage), global::BasilMessage.Parser, new[]{ "InfoMessage" }, new[]{ "Message" }, new[]{ typeof(global::BasilMessage.Types.MessageType) }, null, null)
         }));
   }
@@ -74,6 +76,12 @@ public sealed partial class InfoMessage : pb::IMessage<InfoMessage>
   public InfoMessage(InfoMessage other) : this() {
     _hasBits0 = other._hasBits0;
     pingId_ = other.pingId_;
+    tsSec_ = other.tsSec_;
+    tsMin_ = other.tsMin_;
+    tsHour_ = other.tsHour_;
+    tsDay_ = other.tsDay_;
+    tsMonth_ = other.tsMonth_;
+    tsYear_ = other.tsYear_;
     _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
   }
 
@@ -110,6 +118,168 @@ public sealed partial class InfoMessage : pb::IMessage<InfoMessage>
     _hasBits0 &= ~1;
   }
 
+  /// <summary>Field number for the "tsSec" field.</summary>
+  public const int TsSecFieldNumber = 2;
+  private readonly static uint TsSecDefaultValue = 0;
+
+  private uint tsSec_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public uint TsSec {
+    get { if ((_hasBits0 & 2) != 0) { return tsSec_; } else { return TsSecDefaultValue; } }
+    set {
+      _hasBits0 |= 2;
+      tsSec_ = value;
+    }
+  }
+  /// <summary>Gets whether the "tsSec" field is set</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public bool HasTsSec {
+    get { return (_hasBits0 & 2) != 0; }
+  }
+  /// <summary>Clears the value of the "tsSec" field</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public void ClearTsSec() {
+    _hasBits0 &= ~2;
+  }
+
+  /// <summary>Field number for the "tsMin" field.</summary>
+  public const int TsMinFieldNumber = 3;
+  private readonly static uint TsMinDefaultValue = 0;
+
+  private uint tsMin_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public uint TsMin {
+    get { if ((_hasBits0 & 4) != 0) { return tsMin_; } else { return TsMinDefaultValue; } }
+    set {
+      _hasBits0 |= 4;
+      tsMin_ = value;
+    }
+  }
+  /// <summary>Gets whether the "tsMin" field is set</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public bool HasTsMin {
+    get { return (_hasBits0 & 4) != 0; }
+  }
+  /// <summary>Clears the value of the "tsMin" field</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public void ClearTsMin() {
+    _hasBits0 &= ~4;
+  }
+
+  /// <summary>Field number for the "tsHour" field.</summary>
+  public const int TsHourFieldNumber = 4;
+  private readonly static uint TsHourDefaultValue = 0;
+
+  private uint tsHour_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public uint TsHour {
+    get { if ((_hasBits0 & 8) != 0) { return tsHour_; } else { return TsHourDefaultValue; } }
+    set {
+      _hasBits0 |= 8;
+      tsHour_ = value;
+    }
+  }
+  /// <summary>Gets whether the "tsHour" field is set</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public bool HasTsHour {
+    get { return (_hasBits0 & 8) != 0; }
+  }
+  /// <summary>Clears the value of the "tsHour" field</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public void ClearTsHour() {
+    _hasBits0 &= ~8;
+  }
+
+  /// <summary>Field number for the "tsDay" field.</summary>
+  public const int TsDayFieldNumber = 5;
+  private readonly static uint TsDayDefaultValue = 0;
+
+  private uint tsDay_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public uint TsDay {
+    get { if ((_hasBits0 & 16) != 0) { return tsDay_; } else { return TsDayDefaultValue; } }
+    set {
+      _hasBits0 |= 16;
+      tsDay_ = value;
+    }
+  }
+  /// <summary>Gets whether the "tsDay" field is set</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public bool HasTsDay {
+    get { return (_hasBits0 & 16) != 0; }
+  }
+  /// <summary>Clears the value of the "tsDay" field</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public void ClearTsDay() {
+    _hasBits0 &= ~16;
+  }
+
+  /// <summary>Field number for the "tsMonth" field.</summary>
+  public const int TsMonthFieldNumber = 6;
+  private readonly static uint TsMonthDefaultValue = 0;
+
+  private uint tsMonth_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public uint TsMonth {
+    get { if ((_hasBits0 & 32) != 0) { return tsMonth_; } else { return TsMonthDefaultValue; } }
+    set {
+      _hasBits0 |= 32;
+      tsMonth_ = value;
+    }
+  }
+  /// <summary>Gets whether the "tsMonth" field is set</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public bool HasTsMonth {
+    get { return (_hasBits0 & 32) != 0; }
+  }
+  /// <summary>Clears the value of the "tsMonth" field</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public void ClearTsMonth() {
+    _hasBits0 &= ~32;
+  }
+
+  /// <summary>Field number for the "tsYear" field.</summary>
+  public const int TsYearFieldNumber = 7;
+  private readonly static uint TsYearDefaultValue = 0;
+
+  private uint tsYear_;
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public uint TsYear {
+    get { if ((_hasBits0 & 64) != 0) { return tsYear_; } else { return TsYearDefaultValue; } }
+    set {
+      _hasBits0 |= 64;
+      tsYear_ = value;
+    }
+  }
+  /// <summary>Gets whether the "tsYear" field is set</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public bool HasTsYear {
+    get { return (_hasBits0 & 64) != 0; }
+  }
+  /// <summary>Clears the value of the "tsYear" field</summary>
+  [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+  [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+  public void ClearTsYear() {
+    _hasBits0 &= ~64;
+  }
+
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
   [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
   public override bool Equals(object other) {
@@ -126,6 +296,12 @@ public sealed partial class InfoMessage : pb::IMessage<InfoMessage>
       return true;
     }
     if (PingId != other.PingId) return false;
+    if (TsSec != other.TsSec) return false;
+    if (TsMin != other.TsMin) return false;
+    if (TsHour != other.TsHour) return false;
+    if (TsDay != other.TsDay) return false;
+    if (TsMonth != other.TsMonth) return false;
+    if (TsYear != other.TsYear) return false;
     return Equals(_unknownFields, other._unknownFields);
   }
 
@@ -134,6 +310,12 @@ public sealed partial class InfoMessage : pb::IMessage<InfoMessage>
   public override int GetHashCode() {
     int hash = 1;
     if (HasPingId) hash ^= PingId.GetHashCode();
+    if (HasTsSec) hash ^= TsSec.GetHashCode();
+    if (HasTsMin) hash ^= TsMin.GetHashCode();
+    if (HasTsHour) hash ^= TsHour.GetHashCode();
+    if (HasTsDay) hash ^= TsDay.GetHashCode();
+    if (HasTsMonth) hash ^= TsMonth.GetHashCode();
+    if (HasTsYear) hash ^= TsYear.GetHashCode();
     if (_unknownFields != null) {
       hash ^= _unknownFields.GetHashCode();
     }
@@ -156,6 +338,30 @@ public sealed partial class InfoMessage : pb::IMessage<InfoMessage>
       output.WriteRawTag(8);
       output.WriteInt32(PingId);
     }
+    if (HasTsSec) {
+      output.WriteRawTag(16);
+      output.WriteUInt32(TsSec);
+    }
+    if (HasTsMin) {
+      output.WriteRawTag(24);
+      output.WriteUInt32(TsMin);
+    }
+    if (HasTsHour) {
+      output.WriteRawTag(32);
+      output.WriteUInt32(TsHour);
+    }
+    if (HasTsDay) {
+      output.WriteRawTag(40);
+      output.WriteUInt32(TsDay);
+    }
+    if (HasTsMonth) {
+      output.WriteRawTag(48);
+      output.WriteUInt32(TsMonth);
+    }
+    if (HasTsYear) {
+      output.WriteRawTag(56);
+      output.WriteUInt32(TsYear);
+    }
     if (_unknownFields != null) {
       _unknownFields.WriteTo(output);
     }
@@ -170,6 +376,30 @@ public sealed partial class InfoMessage : pb::IMessage<InfoMessage>
       output.WriteRawTag(8);
       output.WriteInt32(PingId);
     }
+    if (HasTsSec) {
+      output.WriteRawTag(16);
+      output.WriteUInt32(TsSec);
+    }
+    if (HasTsMin) {
+      output.WriteRawTag(24);
+      output.WriteUInt32(TsMin);
+    }
+    if (HasTsHour) {
+      output.WriteRawTag(32);
+      output.WriteUInt32(TsHour);
+    }
+    if (HasTsDay) {
+      output.WriteRawTag(40);
+      output.WriteUInt32(TsDay);
+    }
+    if (HasTsMonth) {
+      output.WriteRawTag(48);
+      output.WriteUInt32(TsMonth);
+    }
+    if (HasTsYear) {
+      output.WriteRawTag(56);
+      output.WriteUInt32(TsYear);
+    }
     if (_unknownFields != null) {
       _unknownFields.WriteTo(ref output);
     }
@@ -182,6 +412,24 @@ public sealed partial class InfoMessage : pb::IMessage<InfoMessage>
     int size = 0;
     if (HasPingId) {
       size += 1 + pb::CodedOutputStream.ComputeInt32Size(PingId);
+    }
+    if (HasTsSec) {
+      size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TsSec);
+    }
+    if (HasTsMin) {
+      size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TsMin);
+    }
+    if (HasTsHour) {
+      size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TsHour);
+    }
+    if (HasTsDay) {
+      size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TsDay);
+    }
+    if (HasTsMonth) {
+      size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TsMonth);
+    }
+    if (HasTsYear) {
+      size += 1 + pb::CodedOutputStream.ComputeUInt32Size(TsYear);
     }
     if (_unknownFields != null) {
       size += _unknownFields.CalculateSize();
@@ -197,6 +445,24 @@ public sealed partial class InfoMessage : pb::IMessage<InfoMessage>
     }
     if (other.HasPingId) {
       PingId = other.PingId;
+    }
+    if (other.HasTsSec) {
+      TsSec = other.TsSec;
+    }
+    if (other.HasTsMin) {
+      TsMin = other.TsMin;
+    }
+    if (other.HasTsHour) {
+      TsHour = other.TsHour;
+    }
+    if (other.HasTsDay) {
+      TsDay = other.TsDay;
+    }
+    if (other.HasTsMonth) {
+      TsMonth = other.TsMonth;
+    }
+    if (other.HasTsYear) {
+      TsYear = other.TsYear;
     }
     _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
   }
@@ -217,6 +483,30 @@ public sealed partial class InfoMessage : pb::IMessage<InfoMessage>
           PingId = input.ReadInt32();
           break;
         }
+        case 16: {
+          TsSec = input.ReadUInt32();
+          break;
+        }
+        case 24: {
+          TsMin = input.ReadUInt32();
+          break;
+        }
+        case 32: {
+          TsHour = input.ReadUInt32();
+          break;
+        }
+        case 40: {
+          TsDay = input.ReadUInt32();
+          break;
+        }
+        case 48: {
+          TsMonth = input.ReadUInt32();
+          break;
+        }
+        case 56: {
+          TsYear = input.ReadUInt32();
+          break;
+        }
       }
     }
   #endif
@@ -234,6 +524,30 @@ public sealed partial class InfoMessage : pb::IMessage<InfoMessage>
           break;
         case 8: {
           PingId = input.ReadInt32();
+          break;
+        }
+        case 16: {
+          TsSec = input.ReadUInt32();
+          break;
+        }
+        case 24: {
+          TsMin = input.ReadUInt32();
+          break;
+        }
+        case 32: {
+          TsHour = input.ReadUInt32();
+          break;
+        }
+        case 40: {
+          TsDay = input.ReadUInt32();
+          break;
+        }
+        case 48: {
+          TsMonth = input.ReadUInt32();
+          break;
+        }
+        case 56: {
+          TsYear = input.ReadUInt32();
           break;
         }
       }

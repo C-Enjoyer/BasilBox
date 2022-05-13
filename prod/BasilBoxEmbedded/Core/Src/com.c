@@ -7,6 +7,7 @@
 
 #include "com.h"
 #include "usart.h"
+#include "rtc.h"
 #include <string.h>
 
 #define _COM_BASIL_ID					42069420
@@ -20,6 +21,7 @@ bool _com_decodeMessageReady(void);
 void _com_handleDecodeMessage(void);
 void _com_handleMessage(BasilMessage_MessageType messageType, void* message);
 void _com_createOutStream(void);
+void _com_setTs(uint32_t sec, uint32_t min, uint32_t hour, uint32_t day, uint32_t month, uint32_t year);
 
 uint8_t com_messageOutBuffer[_COM_MAX_OUT_MESSAGE_SIZE] = {0};
 uint8_t com_messageInBuffer[_COM_MAX_IN_MESSAGE_SIZE] = {0};
@@ -99,6 +101,10 @@ void _com_handleMessage(BasilMessage_MessageType messageType, void* message)
 		case BasilMessage_MessageType_infoMessageType:
 		{
 			InfoMessage infoMessage = *(InfoMessage*) message;
+			if(infoMessage.has_tsSec && infoMessage.has_tsMin && infoMessage.has_tsHour && infoMessage.has_tsDay && infoMessage.has_tsMonth && infoMessage.has_tsYear)
+			{
+				_com_setTs(infoMessage.tsSec, infoMessage.tsMin, infoMessage.tsHour, infoMessage.tsDay, infoMessage.tsMonth, infoMessage.tsYear);
+			}
 			if(infoMessage.has_pingId && infoMessage.pingId == _COM_BASIL_ID)
 			{
 				_com_sendPing();
@@ -177,4 +183,27 @@ void com_sendMessage(BasilMessage_MessageType messageType, void* message)
 
 	memcpy(com_messageOutBuffer, &messageLength, _COM_MESSAGE_SIZE_OFFSET);
 	com_transmit(com_messageOutBuffer, messageLength + _COM_MESSAGE_SIZE_OFFSET);
+}
+
+void _com_setTs(uint32_t sec, uint32_t min, uint32_t hour, uint32_t day, uint32_t month, uint32_t year)
+{
+	if(sec >= 60 || min >= 60 || hour >= 24 || day > 31 || month > 12 || year >= 100)
+	{
+		return;
+	}
+
+	rtc_ts_t ts = {
+		.time = {
+			.sec = sec,
+			.min = min,
+			.hour = hour
+		},
+		.date = {
+			.day = day,
+			.month = month,
+			.year = year
+		}
+	};
+
+	rtc_setTs(ts);
 }
