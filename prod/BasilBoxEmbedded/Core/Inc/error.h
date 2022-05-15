@@ -37,6 +37,7 @@ typedef enum error_code
 	error_rtc_invalid_date_format,			//tried to set rtc with invalid date format
 	error_rtc_cannot_set_date,				//cannot set rtc date
 	error_rtc_cannot_get_date,				//cannot get rtc date
+	error_rtc_encode_string_too_long,		//encode string too long for timestamp
 
 	error_filter_fan_invalid_type,			//invalid enum used
 
@@ -52,6 +53,11 @@ typedef enum error_code
 	error_sd_cannot_open_dir,				//cannot open dir
 	error_sd_cannot_read_dir,				//cannot read dir
 	error_sd_cannot_close_dir, 				//cannot close dir
+
+	error_storage_invalid_type,				//invalid enum used
+	error_storage_file_already_openend,		//there is already a file opened, cannot open another one
+	error_storage_line_too_long_encode,		//line too long to encode
+	error_storage_error_too_long_encode,	//error line too long to encode
 
 
 	error_max

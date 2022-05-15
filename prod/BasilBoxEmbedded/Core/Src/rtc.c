@@ -22,6 +22,8 @@
 
 /* USER CODE BEGIN 0 */
 #include "error.h"
+#include <string.h>
+#include <stdio.h>
 /* USER CODE END 0 */
 
 RTC_HandleTypeDef hrtc;
@@ -216,4 +218,23 @@ void rtc_getTs(rtc_ts_t* ts)
 	rtc_getTime(&ts->time);
 	rtc_getDate(&ts->date);
 }
+
+void rtc_getTsAsString(char* string)
+{
+	rtc_ts_t ts;
+	rtc_getTs(&ts);
+
+	rtc_tsToString(string, ts);
+}
+
+void rtc_tsToString(char* string, rtc_ts_t ts)
+{
+	int ret = snprintf(string, RTC_TS_STRING_SIZE, "%02d:%02d:%02d %02d.%02d.%02d", ts.time.hour, ts.time.min, ts.time.sec, ts.date.day, ts.date.month, ts.date.year);
+
+	if(ret >= RTC_TS_STRING_SIZE || ret < 0)
+	{
+		error_handle(error_rtc_encode_string_too_long, error_soft);
+	}
+}
+
 /* USER CODE END 1 */

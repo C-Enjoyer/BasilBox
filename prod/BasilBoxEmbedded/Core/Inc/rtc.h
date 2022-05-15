@@ -63,6 +63,8 @@ void rtc_setDate(rtc_date_t date);
 void rtc_getDate(rtc_date_t* date);
 void rtc_setTs(rtc_ts_t ts);
 void rtc_getTs(rtc_ts_t* ts);
+void rtc_getTsAsString(char* string);
+void rtc_tsToString(char* string, rtc_ts_t ts);
 
 /* USER CODE END Prototypes */
 
