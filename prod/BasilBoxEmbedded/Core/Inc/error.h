@@ -18,8 +18,28 @@ typedef enum error_code
 {
 	error_none,								//no error, just for test reasons
 	error_log_full,							//error_log is full
-	error_com_message_too_long,				//input message is longer than expected
+	error_main_errorHandle,					//errorhandler in main
+
+	error_com_message_too_long_decode,		//input message is longer than expected
+	error_com_message_too_long_encode,		//output message is longer than expected
 	error_com_message_decode_failed,		//couldn't decode input message
+	error_com_message_encode_failed,		//couldn't encode message
+	error_com_unknown_message_decode,		//unknown input message type
+	error_com_unknown_message_encode,		//unknown message type for encoding
+	error_com_ts_invalid,					//got invalid timestamp from input message
+
+	error_usart_transmit_buffer_full,		//transmit buffer is full, head hitting tail
+	error_usart_cannot_convert_buffer,		//cannot convert ringbuf to linear buf, since linear buf is too small
+
+	error_rtc_invalid_time_format,			//tried to set rtc with invalid time format
+	error_rtc_cannot_set_time,				//cannot set rtc time
+	error_rtc_cannot_get_time,				//cannot get rtc time
+	error_rtc_invalid_date_format,			//tried to set rtc with invalid date format
+	error_rtc_cannot_set_date,				//cannot set rtc date
+	error_rtc_cannot_get_date,				//cannot get rtc date
+
+	error_filter_fan_invalid_type,			//invalid enum used
+
 
 	error_max
 }error_code_t;

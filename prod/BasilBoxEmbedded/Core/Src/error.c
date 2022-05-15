@@ -35,6 +35,7 @@ void error_handle(error_code_t code, error_handling_t handling)
 
 	if(handling == error_hard)
 	{
+		__disable_irq();
 		while(1)
 		{
 			asm("nop");
