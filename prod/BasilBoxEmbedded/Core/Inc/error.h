@@ -40,6 +40,19 @@ typedef enum error_code
 
 	error_filter_fan_invalid_type,			//invalid enum used
 
+	error_sd_cannot_mount,					//cannot mount
+	error_sd_cannot_unmount,				//cannot unmount
+	error_sd_cannot_open_file,				//cannot open file
+	error_sd_cannot_write_file,				//cannot write file
+	error_sd_cannot_read_file,				//cannot read file
+	error_sd_cannot_lseek_file,				//cannot lseek file
+	error_sd_cannot_truncate_file,			//cannot truncate file
+	error_sd_cannot_delete_file,			//cannot delete file
+	error_sd_cannot_close_file,				//cannot close file
+	error_sd_cannot_open_dir,				//cannot open dir
+	error_sd_cannot_read_dir,				//cannot read dir
+	error_sd_cannot_close_dir, 				//cannot close dir
+
 
 	error_max
 }error_code_t;
