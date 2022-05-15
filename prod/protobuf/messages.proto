@@ -3,6 +3,12 @@ syntax = "proto2";
 message InfoMessage
 {
     optional int32 pingId = 1;
+	optional uint32 tsSec = 2;
+	optional uint32 tsMin = 3;
+	optional uint32 tsHour = 4;
+	optional uint32 tsDay = 5;
+	optional uint32 tsMonth = 6;
+	optional uint32 tsYear = 7;
 }
 
 message BasilMessage

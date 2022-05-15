@@ -94,7 +94,14 @@ namespace BasilBoxGUI
         public byte[] GetPingMessage()
         {
             InfoMessage message = new InfoMessage();
+            var ts = DateTime.Now;
             message.PingId = pingId;
+            message.TsSec = (uint) ts.Second;
+            message.TsMin = (uint) ts.Minute;
+            message.TsHour = (uint) ts.Hour;
+            message.TsDay = (uint) ts.Day;
+            message.TsMonth = (uint) ts.Month;
+            message.TsYear = (uint) (ts.Year % 100);
 
             return Encode(message);
         }
