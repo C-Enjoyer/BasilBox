@@ -22,6 +22,7 @@
 
 /* USER CODE BEGIN 0 */
 #include "com.h"
+#include "error.h"
 
 bool usart_initialized = false;
 
@@ -273,7 +274,8 @@ void usart1_transmit(uint8_t* data, uint16_t num)
 
 		if(nextHead == usart1_txTail) // head hitting tail
 		{
-			Error_Handler(); //TODO: handle Error
+			error_handle(error_usart_transmit_buffer_full, error_soft);
+			return;
 		}
 
 		usart1_txHead = nextHead;
@@ -322,7 +324,8 @@ void usart_ringToBuf(uint8_t* buf, uint16_t len, uint8_t* ring, uint16_t start, 
 {
 	if(start >= max || len > max)
 	{
-		Error_Handler(); //TODO: handle Error
+		error_handle(error_usart_cannot_convert_buffer, error_soft);
+		return;
 	}
 
 	if(start + len < max)

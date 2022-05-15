@@ -9,6 +9,7 @@
 #include "usart.h"
 #include "rtc.h"
 #include <string.h>
+#include "error.h"
 
 #define _COM_BASIL_ID					42069420
 #define _COM_MESSAGE_SIZE_OFFSET		sizeof(uint32_t)
@@ -60,7 +61,7 @@ uint16_t com_handleBuffer(uint8_t* buffer, uint16_t bufferSize, uint16_t head, u
 
 		if(com_nextMessageLength > _COM_MAX_IN_MESSAGE_SIZE)
 		{
-			Error_Handler(); //TODO: handle Error
+			error_handle(error_com_message_too_long_decode, error_soft);
 		}
 
 		return usart_ringIncBy(tail, _COM_MESSAGE_SIZE_OFFSET, bufferSize);
@@ -88,7 +89,8 @@ void _com_handleDecodeMessage(void)
 
 	if (!decodeRes)
 	{
-		Error_Handler(); //TODO: handle Error
+		error_handle(error_com_message_decode_failed, error_soft);
+		return;
 	}
 
 	_com_handleMessage(basilMessage.which_message, &basilMessage.message);
@@ -110,7 +112,7 @@ void _com_handleMessage(BasilMessage_MessageType messageType, void* message)
 				_com_sendPing();
 			}
 		}break;
-		default: Error_Handler(); //TODO: handle Error
+		default: error_handle(error_com_unknown_message_decode, error_soft);
 		break;
 	}
 }
@@ -161,24 +163,25 @@ void com_sendMessage(BasilMessage_MessageType messageType, void* message)
 		{
 			basilMessage.message.infoMessage = *(InfoMessage*) message;
 		}break;
-		default: Error_Handler(); //TODO: handle Error
-		break;
+		default: 	error_handle(error_com_unknown_message_encode, error_soft);
+		return;
 	}
 
 	basilMessage.which_message = messageType;
 	_com_createOutStream();
 	encodeRes = pb_encode(&com_outStream, BasilMessage_fields, &basilMessage);
-
-	if(!encodeRes)
-	{
-		Error_Handler(); //TODO: handle Error
-	}
-
 	messageLength = com_outStream.bytes_written;
 
-	if(messageLength == 0 || messageLength > BasilMessage_size)
+	if(!encodeRes || messageLength == 0)
 	{
-		Error_Handler(); //TODO: handle Error
+		error_handle(error_com_message_encode_failed, error_soft);
+		return;
+	}
+
+	if(messageLength > BasilMessage_size)
+	{
+		error_handle(error_com_message_too_long_encode, error_soft);
+		return;
 	}
 
 	memcpy(com_messageOutBuffer, &messageLength, _COM_MESSAGE_SIZE_OFFSET);
@@ -189,6 +192,7 @@ void _com_setTs(uint32_t sec, uint32_t min, uint32_t hour, uint32_t day, uint32_
 {
 	if(sec >= 60 || min >= 60 || hour >= 24 || day > 31 || month > 12 || year >= 100)
 	{
+		error_handle(error_com_ts_invalid, error_soft);
 		return;
 	}
 

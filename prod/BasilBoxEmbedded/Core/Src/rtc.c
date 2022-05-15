@@ -21,7 +21,7 @@
 #include "rtc.h"
 
 /* USER CODE BEGIN 0 */
-
+#include "error.h"
 /* USER CODE END 0 */
 
 RTC_HandleTypeDef hrtc;
@@ -133,7 +133,7 @@ void rtc_setTime(rtc_time_t time)
 {
 	if (!IS_RTC_HOUR24(time.hour) || !IS_RTC_MINUTES(time.min) || !IS_RTC_SECONDS(time.sec))
 	{
-		//TODO: Handle error
+		error_handle(error_rtc_invalid_time_format, error_soft);
 		return;
 	}
 
@@ -150,8 +150,7 @@ void rtc_setTime(rtc_time_t time)
 
 	if(HAL_RTC_SetTime(&hrtc, &rtcTime, RTC_FORMAT_BIN) != HAL_OK)
 	{
-		//TODO: Handle error
-		return;
+		error_handle(error_rtc_cannot_set_time, error_soft);
 	}
 }
 
@@ -161,7 +160,8 @@ void rtc_getTime(rtc_time_t* time)
 
 	if (HAL_RTC_GetTime(&hrtc, &rtcTime, RTC_FORMAT_BIN) != HAL_OK)
 	{
-		//TODO: Handle error
+		error_handle(error_rtc_cannot_get_time, error_soft);
+		return;
 	}
 
 	time->hour = rtcTime.Hours;
@@ -173,7 +173,7 @@ void rtc_setDate(rtc_date_t date)
 {
 	if (!IS_RTC_YEAR(date.year) || !IS_RTC_MONTH(date.month) || !IS_RTC_DATE(date.day))
 	{
-		//TODO: Handle error
+		error_handle(error_rtc_invalid_date_format, error_soft);
 		return;
 	}
 
@@ -186,7 +186,7 @@ void rtc_setDate(rtc_date_t date)
 
 	if(HAL_RTC_SetDate(&hrtc, &rtcDate, RTC_FORMAT_BIN) != HAL_OK)
 	{
-		//TODO: Handle error
+		error_handle(error_rtc_cannot_set_date, error_soft);
 	}
 }
 
@@ -196,7 +196,8 @@ void rtc_getDate(rtc_date_t* date)
 
 	if (HAL_RTC_GetDate(&hrtc, &rtcDate, RTC_FORMAT_BIN) != HAL_OK)
 	{
-		//TODO: Handle error
+		error_handle(error_rtc_cannot_get_date, error_soft);
+		return;
 	}
 
 	date->day = rtcDate.Date;

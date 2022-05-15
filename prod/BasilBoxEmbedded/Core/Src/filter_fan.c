@@ -7,6 +7,7 @@
 
 #include "filter_fan.h"
 #include "gpio.h"
+#include "error.h"
 
 #define FILTER_FAN_TOP_PORT	FILTER_FAN_TOP_GPIO_Port
 #define FILTER_FAN_TOP_PIN	FILTER_FAN_TOP_Pin
@@ -20,6 +21,11 @@ bool filter_fan_botPinLookUp[filter_fan_max] = {[filter_fan_off] = false, [filte
 
 void filter_fan_set(filter_fan_state_t newState)
 {
+	if(newState >= filter_fan_max)
+	{
+		error_handle(error_filter_fan_invalid_type, error_soft);
+		return;
+	}
 	HAL_GPIO_WritePin(FILTER_FAN_TOP_PORT, FILTER_FAN_TOP_PIN, gpio_getPinState(filter_fan_topPinLookUp[newState]));
 
 	HAL_GPIO_WritePin(FILTER_FAN_BOT_PORT, FILTER_FAN_BOT_PIN, gpio_getPinState(filter_fan_botPinLookUp[newState]));

@@ -16,6 +16,7 @@ typedef enum filter_fan_state
 	filter_fan_off,
 	filter_fan_lvl1,
 	filter_fan_lvl2,
+
 	filter_fan_max
 }filter_fan_state_t;
 
