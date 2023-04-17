@@ -57,8 +57,10 @@ typedef enum error_code
 	error_storage_invalid_type,					//invalid enum used
 	error_storage_file_already_openend,			//there is already a file opened, cannot open another one
 	error_storage_line_too_long_encode,			//line too long to encode
+	error_storage_format_too_long,				//format string is too long for storage
 	error_storage_error_too_long_encode,		//error line too long to encode
 	error_storage_filterFan_too_long_encode,	//filterFan line too long to encode
+	error_storage_filterFan_cannot_decode,		//filterFan line cannot be decoded
 
 
 	error_max

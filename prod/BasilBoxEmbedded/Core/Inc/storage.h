@@ -13,7 +13,8 @@
 
 #include "sd.h"
 
-#define STORAGE_MAX_LINE_LEN		100
+#define STORAGE_MAX_LINE_LEN				100
+#define STORAGE_MAX_FORMAT_STRING_LEN	(STORAGE_MAX_LINE_LEN / 2)
 
 #define storage_types \
 X(storage_error, "Errorlog.txt", FA_OPEN_APPEND | FA_WRITE) \
@@ -26,6 +27,7 @@ typedef enum storage_type { storage_types } storage_type_t;
 #undef X
 
 void storage_save(storage_type_t type, void *value);
+bool storage_read(storage_type_t type, void *value);
 
 
 #endif /* INC_STORAGE_H_ */

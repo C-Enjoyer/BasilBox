@@ -16,6 +16,9 @@
 bool _storage_encodeLine(char* line, storage_type_t type, void *value);
 bool _storage_encodeError(char* line, storage_type_t type, void *value);
 bool _storage_encodeFilterFanSettings(char* line, storage_type_t type, void *value);
+bool _storage_decodeLine(char* line, storage_type_t type, void *value);
+bool _storage_decodeFilterFanSettings(char* line, storage_type_t type, void *value);
+char* _storage_getFormatString(const char* format);
 
 #define X(type, filename, openFlags) filename,
 const TCHAR* storage_filename[] = { storage_types };
@@ -31,6 +34,8 @@ char storage_ts[RTC_TS_STRING_SIZE];
 char storage_line[STORAGE_MAX_LINE_LEN + 1];
 FIL storage_file;
 bool storage_fileOpened = false;
+
+char storage_formatString[STORAGE_MAX_FORMAT_STRING_LEN + 1];
 
 
 void storage_save(storage_type_t type, void *value)
@@ -78,6 +83,47 @@ void storage_save(storage_type_t type, void *value)
 	storage_fileOpened = false;
 }
 
+bool storage_read(storage_type_t type, void *value)
+{
+	if(type >= storage_type_max)
+	{
+		error_handle(error_storage_invalid_type, error_soft);
+		return false;
+	}
+
+	if(storage_fileOpened)
+	{
+		error_handle(error_storage_file_already_openend, error_soft);
+		return false;
+	}
+
+	if(!sd_fOpen(&storage_file, storage_filename[type], FA_READ))
+	{
+		return false;
+	}
+
+	storage_fileOpened = true;
+
+	if(!sd_fGets(&storage_file, storage_line, STORAGE_MAX_LINE_LEN + 1))
+	{
+		return false;
+	}
+
+	if(!_storage_decodeLine(storage_line, type, value))
+	{
+		return false;
+	}
+
+	if(!sd_fClose(&storage_file))
+	{
+		return false;
+	}
+
+	storage_fileOpened = false;
+
+	return true;
+}
+
 bool _storage_encodeLine(char* line, storage_type_t type, void *value)
 {
 	bool ret = false;
@@ -115,7 +161,7 @@ bool _storage_encodeError(char* line, storage_type_t type, void *value)
 
 	rtc_tsToString(storage_ts, error.ts);
 
-	int ret = snprintf(line, STORAGE_MAX_LINE_LEN + 1, "%s%s%d", storage_ts, storage_seperation, error.code);
+	int ret = snprintf(line, STORAGE_MAX_LINE_LEN + 1, _storage_getFormatString("%s%d"), storage_ts, error.code);
 
 	if(ret >= STORAGE_MAX_LINE_LEN + 1 || ret < 0)
 	{
@@ -130,10 +176,10 @@ bool _storage_encodeFilterFanSettings(char* line, storage_type_t type, void *val
 {
 	filterFan_storageStruct_t settings = *(filterFan_storageStruct_t*) value;
 
-	int ret = snprintf(line, STORAGE_MAX_LINE_LEN + 1, "%d%s%"PRIu32"%s%d%s%"PRIu32"",
-			settings.onInterval.state, storage_seperation,
-			settings.onInterval.time, storage_seperation,
-			settings.offInterval.state, storage_seperation,
+	int ret = snprintf(line, STORAGE_MAX_LINE_LEN + 1, _storage_getFormatString("%d%"PRIu32"%d%"PRIu32),
+			settings.onInterval.state,
+			settings.onInterval.time,
+			settings.offInterval.state,
 			settings.offInterval.time);
 
 	if(ret >= STORAGE_MAX_LINE_LEN + 1 || ret < 0)
@@ -143,4 +189,87 @@ bool _storage_encodeFilterFanSettings(char* line, storage_type_t type, void *val
 	}
 
 	return true;
+}
+
+bool _storage_decodeLine(char* line, storage_type_t type, void *value)
+{
+	bool ret = false;
+
+	switch(type)
+	{
+		case storage_filterFan: ret = _storage_decodeFilterFanSettings(line, type, value);
+		break;
+		case storage_ledLight:
+		break;
+		default: ret = false;
+		break;
+	}
+
+	return ret;
+}
+
+bool _storage_decodeFilterFanSettings(char* line, storage_type_t type, void *value)
+{
+	filterFan_storageStruct_t* settings = (filterFan_storageStruct_t*) value;
+
+	int ret = sscanf(line, _storage_getFormatString("%d%"PRIu32"%d%"PRIu32),
+			&(settings->onInterval.state),
+			&(settings->onInterval.time),
+			&(settings->offInterval.state),
+			&(settings->offInterval.time));
+
+	if(ret < 4) // 4 parameters to read
+	{
+		error_handle(error_storage_filterFan_cannot_decode, error_soft);
+		return false;
+	}
+
+	return true;
+}
+
+
+char* _storage_getFormatString(const char* format)
+{
+	storage_formatString[0] = '\0';
+
+	size_t formatLen = strlen(format);
+	size_t sepLen = strlen(storage_seperation);
+	size_t curChar = 0;
+
+	bool foundFirst = false;
+
+	for(size_t i = 0; i < formatLen; i++)
+	{
+		if(format[i] == '%')
+		{
+			if(foundFirst)
+			{
+				if(curChar + sepLen > STORAGE_MAX_FORMAT_STRING_LEN)
+				{
+					error_handle(error_storage_format_too_long, error_soft);
+					return NULL;
+				}
+
+				strcat(storage_formatString, storage_seperation);
+				curChar += sepLen;
+			}
+			else
+			{
+				foundFirst = true;
+			}
+		}
+
+		if(curChar + 1 > STORAGE_MAX_FORMAT_STRING_LEN)
+		{
+			error_handle(error_storage_format_too_long, error_soft);
+			return NULL;
+		}
+
+		storage_formatString[curChar] = format[i];
+		curChar++;
+		storage_formatString[curChar] = '\0';
+
+	}
+
+	return storage_formatString;
 }
