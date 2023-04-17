@@ -11,15 +11,15 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef enum filter_fan_state
+typedef enum filterFan_state
 {
-	filter_fan_off,
-	filter_fan_lvl1,
-	filter_fan_lvl2,
+	filterFan_off,
+	filterFan_lvl1,
+	filterFan_lvl2,
 
-	filter_fan_max
-}filter_fan_state_t;
+	filterFan_max
+}filterFan_state_t;
 
-void filter_fan_set(filter_fan_state_t newState);
+void filterFan_set(filterFan_state_t newState);
 
 #endif /* INC_FILTER_FAN_H_ */

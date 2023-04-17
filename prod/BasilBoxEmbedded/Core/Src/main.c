@@ -110,7 +110,7 @@ int main(void)
   tim_init();
   volreg_init();
   led_blink(200, 800);
-  filter_fan_set(filter_fan_off);
+  filterFan_set(filterFan_off);
   /* USER CODE END 2 */
 
   /* Infinite loop */

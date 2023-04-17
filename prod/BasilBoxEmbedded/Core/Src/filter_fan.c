@@ -14,19 +14,19 @@
 #define FILTER_FAN_BOT_PORT	FILTER_FAN_BOT_GPIO_Port
 #define FILTER_FAN_BOT_PIN	FILTER_FAN_BOT_Pin
 
-filter_fan_state_t filter_fan_state = filter_fan_off;
+filterFan_state_t filterFan_state = filterFan_off;
 
-bool filter_fan_topPinLookUp[filter_fan_max] = {[filter_fan_off] = false, [filter_fan_lvl1] = true, [filter_fan_lvl2] = true};
-bool filter_fan_botPinLookUp[filter_fan_max] = {[filter_fan_off] = false, [filter_fan_lvl1] = false, [filter_fan_lvl2] = true};
+bool filterFan_topPinLookUp[filterFan_max] = {[filterFan_off] = false, [filterFan_lvl1] = true, [filterFan_lvl2] = true};
+bool filterFan_botPinLookUp[filterFan_max] = {[filterFan_off] = false, [filterFan_lvl1] = false, [filterFan_lvl2] = true};
 
-void filter_fan_set(filter_fan_state_t newState)
+void filterFan_set(filterFan_state_t newState)
 {
-	if(newState >= filter_fan_max)
+	if(newState >= filterFan_max)
 	{
 		error_handle(error_filter_fan_invalid_type, error_soft);
 		return;
 	}
-	HAL_GPIO_WritePin(FILTER_FAN_TOP_PORT, FILTER_FAN_TOP_PIN, gpio_getPinState(filter_fan_topPinLookUp[newState]));
+	HAL_GPIO_WritePin(FILTER_FAN_TOP_PORT, FILTER_FAN_TOP_PIN, gpio_getPinState(filterFan_topPinLookUp[newState]));
 
-	HAL_GPIO_WritePin(FILTER_FAN_BOT_PORT, FILTER_FAN_BOT_PIN, gpio_getPinState(filter_fan_botPinLookUp[newState]));
+	HAL_GPIO_WritePin(FILTER_FAN_BOT_PORT, FILTER_FAN_BOT_PIN, gpio_getPinState(filterFan_botPinLookUp[newState]));
 }
