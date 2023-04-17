@@ -8,6 +8,7 @@
 #include "storage.h"
 #include "error.h"
 #include "filter_fan.h"
+#include "led_light.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -16,8 +17,10 @@
 bool _storage_encodeLine(char* line, storage_type_t type, void *value);
 bool _storage_encodeError(char* line, storage_type_t type, void *value);
 bool _storage_encodeFilterFanSettings(char* line, storage_type_t type, void *value);
+bool _storage_encodeLedLightSettings(char* line, storage_type_t type, void *value);
 bool _storage_decodeLine(char* line, storage_type_t type, void *value);
 bool _storage_decodeFilterFanSettings(char* line, storage_type_t type, void *value);
+bool _storage_decodeLedLightSettings(char* line, storage_type_t type, void *value);
 char* _storage_getFormatString(const char* format);
 
 #define X(type, filename, openFlags) filename,
@@ -30,7 +33,7 @@ BYTE storage_openFlags[] = { storage_types };
 
 char const storage_seperation[] = " ; ";
 
-char storage_ts[RTC_TS_STRING_SIZE];
+char storage_ts[2][RTC_TS_STRING_SIZE];
 char storage_line[STORAGE_MAX_LINE_LEN + 1];
 FIL storage_file;
 bool storage_fileOpened = false;
@@ -135,7 +138,7 @@ bool _storage_encodeLine(char* line, storage_type_t type, void *value)
 		break;
 		case storage_filterFan: ret = _storage_encodeFilterFanSettings(line, type, value);
 		break;
-		case storage_ledLight:
+		case storage_ledLight: ret = _storage_encodeLedLightSettings(line, type, value);
 		break;
 		default: ret = false;
 		break;
@@ -159,9 +162,9 @@ bool _storage_encodeError(char* line, storage_type_t type, void *value)
 {
 	error_log_t error = *(error_log_t*) value;
 
-	rtc_tsToString(storage_ts, error.ts);
+	rtc_tsToString(storage_ts[0], error.ts);
 
-	int ret = snprintf(line, STORAGE_MAX_LINE_LEN + 1, _storage_getFormatString("%s%d"), storage_ts, error.code);
+	int ret = snprintf(line, STORAGE_MAX_LINE_LEN + 1, _storage_getFormatString("%s%d"), storage_ts[0], error.code);
 
 	if(ret >= STORAGE_MAX_LINE_LEN + 1 || ret < 0)
 	{
@@ -191,6 +194,28 @@ bool _storage_encodeFilterFanSettings(char* line, storage_type_t type, void *val
 	return true;
 }
 
+bool _storage_encodeLedLightSettings(char* line, storage_type_t type, void *value)
+{
+	ledLight_storageStruct_t settings = *(ledLight_storageStruct_t*) value;
+
+	rtc_timeToString(storage_ts[0], settings.onInterval.dayTime);
+	rtc_timeToString(storage_ts[1], settings.offInterval.dayTime);
+
+	int ret = snprintf(line, STORAGE_MAX_LINE_LEN + 1, _storage_getFormatString("%lf%s%lf%s"),
+			settings.onInterval.percent,
+			storage_ts[0],
+			settings.offInterval.percent,
+			storage_ts[1]);
+
+	if(ret >= STORAGE_MAX_LINE_LEN + 1 || ret < 0)
+	{
+		error_handle(error_storage_ledLight_too_long_encode, error_soft);
+		return false;
+	}
+
+	return true;
+}
+
 bool _storage_decodeLine(char* line, storage_type_t type, void *value)
 {
 	bool ret = false;
@@ -199,7 +224,7 @@ bool _storage_decodeLine(char* line, storage_type_t type, void *value)
 	{
 		case storage_filterFan: ret = _storage_decodeFilterFanSettings(line, type, value);
 		break;
-		case storage_ledLight:
+		case storage_ledLight: ret = _storage_decodeLedLightSettings(line, type, value);
 		break;
 		default: ret = false;
 		break;
@@ -221,6 +246,27 @@ bool _storage_decodeFilterFanSettings(char* line, storage_type_t type, void *val
 	if(ret < 4) // 4 parameters to read
 	{
 		error_handle(error_storage_filterFan_cannot_decode, error_soft);
+		return false;
+	}
+
+	return true;
+}
+
+bool _storage_decodeLedLightSettings(char* line, storage_type_t type, void *value)
+{
+	ledLight_storageStruct_t* settings = (ledLight_storageStruct_t*) value;
+
+	int ret = sscanf(line, _storage_getFormatString("%lf%s%lf%s"),
+			&(settings->onInterval.percent),
+			storage_ts[0],
+			&(settings->offInterval.percent),
+			storage_ts[1]);
+
+	if(ret < 4 || // 4 parameters to read
+			!rtc_timeFromString(&(settings->onInterval.dayTime), storage_ts[0]) ||
+			!rtc_timeFromString(&(settings->offInterval.dayTime), storage_ts[1]))
+	{
+		error_handle(error_storage_ledLight_cannot_decode, error_soft);
 		return false;
 	}
 

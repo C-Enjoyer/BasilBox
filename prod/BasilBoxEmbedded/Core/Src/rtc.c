@@ -24,6 +24,10 @@
 #include "error.h"
 #include <string.h>
 #include <stdio.h>
+
+bool _rtc_isTime(rtc_time_t time);
+bool _rtc_isDate(rtc_date_t date);
+bool _rtc_isTs(rtc_ts_t ts);
 /* USER CODE END 0 */
 
 RTC_HandleTypeDef hrtc;
@@ -133,9 +137,8 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
 /* USER CODE BEGIN 1 */
 void rtc_setTime(rtc_time_t time)
 {
-	if (!IS_RTC_HOUR24(time.hour) || !IS_RTC_MINUTES(time.min) || !IS_RTC_SECONDS(time.sec))
+	if(!_rtc_isTime(time))
 	{
-		error_handle(error_rtc_invalid_time_format, error_soft);
 		return;
 	}
 
@@ -173,12 +176,10 @@ void rtc_getTime(rtc_time_t* time)
 
 void rtc_setDate(rtc_date_t date)
 {
-	if (!IS_RTC_YEAR(date.year) || !IS_RTC_MONTH(date.month) || !IS_RTC_DATE(date.day))
+	if(!_rtc_isDate(date))
 	{
-		error_handle(error_rtc_invalid_date_format, error_soft);
 		return;
 	}
-
 
 	RTC_DateTypeDef rtcDate;
 	rtcDate.Date = date.day;
@@ -227,14 +228,94 @@ void rtc_getTsAsString(char* string)
 	rtc_tsToString(string, ts);
 }
 
-void rtc_tsToString(char* string, rtc_ts_t ts)
+bool rtc_tsToString(char* string, rtc_ts_t ts)
 {
+	string[0] = '\0';
+
+	if(!_rtc_isTs(ts))
+	{
+		return false;
+	}
+
 	int ret = snprintf(string, RTC_TS_STRING_SIZE, "%02d:%02d:%02d %02d.%02d.%02d", ts.time.hour, ts.time.min, ts.time.sec, ts.date.day, ts.date.month, ts.date.year);
 
 	if(ret >= RTC_TS_STRING_SIZE || ret < 0)
 	{
+		string[0] = '\0';
 		error_handle(error_rtc_encode_string_too_long, error_soft);
+		return false;
 	}
+
+	return true;
+}
+
+bool rtc_timeToString(char* string, rtc_time_t time)
+{
+	string[0] = '\0';
+
+	if(!_rtc_isTime(time))
+	{
+		return false;
+	}
+
+	int ret = snprintf(string, RTC_TS_STRING_SIZE, "%02d:%02d:%02d", time.hour, time.min, time.sec);
+
+	if(ret >= RTC_TS_STRING_SIZE || ret < 0)
+	{
+		string[0] = '\0';
+		error_handle(error_rtc_encode_string_too_long, error_soft);
+		return false;
+	}
+
+	return true;
+}
+
+bool rtc_timeFromString(rtc_time_t* time, char* string)
+{
+	int ret = sscanf(string, "%02d:%02d:%02d", (int*) &(time->hour), (int*) &(time->min), (int*) &(time->sec));
+
+	if(ret < 3 || !_rtc_isTime(*time)) // 3 parameters to read
+	{
+		time->hour = 0;
+		time->min = 0;
+		time->sec = 0;
+		error_handle(error_rtc_cannot_decode_time, error_soft);
+		return false;
+	}
+
+	return true;
+}
+
+bool _rtc_isTime(rtc_time_t time)
+{
+	if (!IS_RTC_HOUR24(time.hour) || !IS_RTC_MINUTES(time.min) || !IS_RTC_SECONDS(time.sec))
+	{
+		error_handle(error_rtc_invalid_time_format, error_soft);
+		return false;
+	}
+
+	return true;
+}
+
+bool _rtc_isDate(rtc_date_t date)
+{
+	if (!IS_RTC_YEAR(date.year) || !IS_RTC_MONTH(date.month) || !IS_RTC_DATE(date.day))
+	{
+		error_handle(error_rtc_invalid_date_format, error_soft);
+		return false;
+	}
+
+	return true;
+}
+
+bool _rtc_isTs(rtc_ts_t ts)
+{
+	if(!_rtc_isTime(ts.time) || !_rtc_isDate(ts.date))
+	{
+		return false;
+	}
+
+	return true;
 }
 
 /* USER CODE END 1 */

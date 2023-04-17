@@ -29,7 +29,7 @@ extern "C" {
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 extern RTC_HandleTypeDef hrtc;
@@ -64,7 +64,9 @@ void rtc_getDate(rtc_date_t* date);
 void rtc_setTs(rtc_ts_t ts);
 void rtc_getTs(rtc_ts_t* ts);
 void rtc_getTsAsString(char* string);
-void rtc_tsToString(char* string, rtc_ts_t ts);
+bool rtc_tsToString(char* string, rtc_ts_t ts);
+bool rtc_timeToString(char* string, rtc_time_t time);
+bool rtc_timeFromString(rtc_time_t* time, char* string);
 
 /* USER CODE END Prototypes */
 

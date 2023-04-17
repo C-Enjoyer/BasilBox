@@ -38,6 +38,7 @@ typedef enum error_code
 	error_rtc_cannot_set_date,					//cannot set rtc date
 	error_rtc_cannot_get_date,					//cannot get rtc date
 	error_rtc_encode_string_too_long,			//encode string too long for timestamp
+	error_rtc_cannot_decode_time,				//cannot decode time from string
 
 	error_filter_fan_invalid_type,				//invalid enum used
 
@@ -60,7 +61,9 @@ typedef enum error_code
 	error_storage_format_too_long,				//format string is too long for storage
 	error_storage_error_too_long_encode,		//error line too long to encode
 	error_storage_filterFan_too_long_encode,	//filterFan line too long to encode
+	error_storage_ledLight_too_long_encode,		//ledLight line too long to encode
 	error_storage_filterFan_cannot_decode,		//filterFan line cannot be decoded
+	error_storage_ledLight_cannot_decode,		//ledLight line cannot be decoded
 
 
 	error_max
