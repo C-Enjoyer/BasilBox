@@ -18,7 +18,21 @@ typedef enum filterFan_state
 	filterFan_lvl2,
 
 	filterFan_max
-}filterFan_state_t;
+} filterFan_state_t;
+
+typedef struct filterFan_interval
+{
+	filterFan_state_t state;
+	uint32_t time;	// [s]
+
+} filterFan_interval_t;
+
+typedef struct filterFan_storageStruct
+{
+	filterFan_interval_t onInterval;
+	filterFan_interval_t offInterval;
+
+} filterFan_storageStruct_t;
 
 void filterFan_set(filterFan_state_t newState);
 

@@ -6,17 +6,23 @@
  */
 
 #include "storage.h"
-#include "sd.h"
 #include "error.h"
+#include "filter_fan.h"
 
 #include <string.h>
 #include <stdio.h>
+#include <inttypes.h>
 
 bool _storage_encodeLine(char* line, storage_type_t type, void *value);
 bool _storage_encodeError(char* line, storage_type_t type, void *value);
+bool _storage_encodeFilterFanSettings(char* line, storage_type_t type, void *value);
 
-#define X(type, filename) filename,
-char const *storage_filename[] = { storage_types };
+#define X(type, filename, openFlags) filename,
+const TCHAR* storage_filename[] = { storage_types };
+#undef X
+
+#define X(type, filename, openFlags) openFlags,
+BYTE storage_openFlags[] = { storage_types };
 #undef X
 
 char const storage_seperation[] = " ; ";
@@ -47,7 +53,7 @@ void storage_save(storage_type_t type, void *value)
 		return;
 	}
 
-	if(!sd_fOpen(&storage_file, storage_filename[type], FA_OPEN_APPEND | FA_WRITE))
+	if(!sd_fOpen(&storage_file, storage_filename[type], storage_openFlags[type]))
 	{
 		return;
 	}
@@ -55,6 +61,11 @@ void storage_save(storage_type_t type, void *value)
 	storage_fileOpened = true;
 
 	if(!sd_fWrite(&storage_file, storage_line))
+	{
+		return;
+	}
+
+	if(!sd_fTruncate(&storage_file))
 	{
 		return;
 	}
@@ -76,9 +87,9 @@ bool _storage_encodeLine(char* line, storage_type_t type, void *value)
 	{
 		case storage_error: ret = _storage_encodeError(line, type, value);
 		break;
-		case storage_filter_fan_state:
+		case storage_filterFan: ret = _storage_encodeFilterFanSettings(line, type, value);
 		break;
-		case storage_led_light_brightness:
+		case storage_ledLight:
 		break;
 		default: ret = false;
 		break;
@@ -109,6 +120,25 @@ bool _storage_encodeError(char* line, storage_type_t type, void *value)
 	if(ret >= STORAGE_MAX_LINE_LEN + 1 || ret < 0)
 	{
 		error_handle(error_storage_error_too_long_encode, error_soft);
+		return false;
+	}
+
+	return true;
+}
+
+bool _storage_encodeFilterFanSettings(char* line, storage_type_t type, void *value)
+{
+	filterFan_storageStruct_t settings = *(filterFan_storageStruct_t*) value;
+
+	int ret = snprintf(line, STORAGE_MAX_LINE_LEN + 1, "%d%s%"PRIu32"%s%d%s%"PRIu32"",
+			settings.onInterval.state, storage_seperation,
+			settings.onInterval.time, storage_seperation,
+			settings.offInterval.state, storage_seperation,
+			settings.offInterval.time);
+
+	if(ret >= STORAGE_MAX_LINE_LEN + 1 || ret < 0)
+	{
+		error_handle(error_storage_filterFan_too_long_encode, error_soft);
 		return false;
 	}
 

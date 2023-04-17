@@ -40,9 +40,11 @@ void _debug_handleButton(button_event_t event)
 {
 	if(event == button_released)
 	{
-		filterFan_storageStruct_t store = { { filterFan_lvl2, 20 }, { filterFan_off, 10000 } };
 
-		storage_save(storage_filterFan, &store);
+	}
+	else if(event == button_pressed)
+	{
+
 	}
 }
 

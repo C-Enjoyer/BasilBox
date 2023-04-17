@@ -11,15 +11,17 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "sd.h"
+
 #define STORAGE_MAX_LINE_LEN		100
 
 #define storage_types \
-X(storage_error, "Errorlog.txt") \
-X(storage_filter_fan_state, "Filter.txt") \
-X(storage_led_light_brightness, "Brightness.txt") \
-X(storage_type_max, "")
+X(storage_error, "Errorlog.txt", FA_OPEN_APPEND | FA_WRITE) \
+X(storage_filterFan, "FilterFan.txt", FA_OPEN_ALWAYS | FA_WRITE) \
+X(storage_ledLight, "LedLight.txt", FA_OPEN_ALWAYS | FA_WRITE) \
+X(storage_type_max, "", FA_READ)
 
-#define X(type, filename) type,
+#define X(type, filename, openFlags) type,
 typedef enum storage_type { storage_types } storage_type_t;
 #undef X
 
