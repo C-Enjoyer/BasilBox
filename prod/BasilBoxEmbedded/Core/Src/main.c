@@ -105,24 +105,25 @@ int main(void)
   MX_FATFS_Init();
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
-  sd_init();
-  com_init();
-  usart_init();
-  tim_init();
-  volreg_init();
-  debug_init();
+    sd_init();
+    com_init();
+    usart_init();
+    tim_init();
+    volreg_init();
+    debug_init();
+	filterFan_init();
 
-  led_blink(200, 800);
-  filterFan_set(filterFan_off);
+    led_blink(200, 800);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-	  usart_mainLoop();
-	  com_mainLoop();
-	  debug_mainLoop();
+    while (1)
+    {
+        usart_mainLoop();
+        com_mainLoop();
+        debug_mainLoop();
+	    filterFan_mainLoop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

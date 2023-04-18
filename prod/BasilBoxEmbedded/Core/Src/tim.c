@@ -23,6 +23,7 @@
 /* USER CODE BEGIN 0 */
 #include "led.h"
 #include "button.h"
+#include "filter_fan.h"
 /* USER CODE END 0 */
 
 TIM_HandleTypeDef htim3;
@@ -256,6 +257,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	{
 		led_timer_1ms();
 		button_timer_1ms();
+		filterFan_timer1ms();
 	}
 }
 /* USER CODE END 1 */
