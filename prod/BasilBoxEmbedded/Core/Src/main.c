@@ -34,6 +34,7 @@
 #include "com.h"
 #include "sd.h"
 #include "error.h"
+#include "debug.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -95,8 +96,8 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_USART2_UART_Init();
   MX_DMA_Init();
+  MX_USART2_UART_Init();
   MX_TIM3_Init();
   MX_USART1_UART_Init();
   MX_TIM11_Init();
@@ -109,8 +110,10 @@ int main(void)
   usart_init();
   tim_init();
   volreg_init();
+  debug_init();
+
   led_blink(200, 800);
-  filter_fan_set(filter_fan_off);
+  filterFan_set(filterFan_off);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -119,6 +122,7 @@ int main(void)
   {
 	  usart_mainLoop();
 	  com_mainLoop();
+	  debug_mainLoop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

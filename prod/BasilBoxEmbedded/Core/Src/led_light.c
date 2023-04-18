@@ -14,14 +14,14 @@
 #define _LED_LIGHT_K		(LED_LIGHT_MAX - LED_LIGHT_MIN)
 #define _LED_LIGHT_D		(LED_LIGHT_MIN)
 
-double _led_light_convertLinear(double percent);
+double _ledLight_convertLinear(double percent);
 
-void led_light_setBrightness(double percent)
+void ledLight_setBrightness(double percent)
 {
-	volreg_setRelative(_led_light_convertLinear(percent));
+	volreg_setRelative(_ledLight_convertLinear(percent));
 }
 
-double _led_light_convertLinear(double percent)
+double _ledLight_convertLinear(double percent)
 {
 	return (percent == 0) ? (0) : (percent * _LED_LIGHT_K + _LED_LIGHT_D);
 }

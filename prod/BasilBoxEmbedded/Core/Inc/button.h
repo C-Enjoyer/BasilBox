@@ -15,7 +15,9 @@ typedef enum button_event
 {
 	button_none,
 	button_released,
-	button_pressed
+	button_pressed,
+
+	button_event_max
 }button_event_t;
 
 void button_init(void);

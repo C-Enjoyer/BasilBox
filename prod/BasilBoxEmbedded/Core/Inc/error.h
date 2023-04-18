@@ -16,29 +16,54 @@
 
 typedef enum error_code
 {
-	error_none,								//no error, just for test reasons
-	error_log_full,							//error_log is full
-	error_main_errorHandle,					//errorhandler in main
+	error_none,									//no error, just for test reasons
+	error_log_full,								//error_log is full
+	error_main_errorHandle,						//errorhandler in main
 
-	error_com_message_too_long_decode,		//input message is longer than expected
-	error_com_message_too_long_encode,		//output message is longer than expected
-	error_com_message_decode_failed,		//couldn't decode input message
-	error_com_message_encode_failed,		//couldn't encode message
-	error_com_unknown_message_decode,		//unknown input message type
-	error_com_unknown_message_encode,		//unknown message type for encoding
-	error_com_ts_invalid,					//got invalid timestamp from input message
+	error_com_message_too_long_decode,			//input message is longer than expected
+	error_com_message_too_long_encode,			//output message is longer than expected
+	error_com_message_decode_failed,			//couldn't decode input message
+	error_com_message_encode_failed,			//couldn't encode message
+	error_com_unknown_message_decode,			//unknown input message type
+	error_com_unknown_message_encode,			//unknown message type for encoding
+	error_com_ts_invalid,						//got invalid timestamp from input message
 
-	error_usart_transmit_buffer_full,		//transmit buffer is full, head hitting tail
-	error_usart_cannot_convert_buffer,		//cannot convert ringbuf to linear buf, since linear buf is too small
+	error_usart_transmit_buffer_full,			//transmit buffer is full, head hitting tail
+	error_usart_cannot_convert_buffer,			//cannot convert ringbuf to linear buf, since linear buf is too small
 
-	error_rtc_invalid_time_format,			//tried to set rtc with invalid time format
-	error_rtc_cannot_set_time,				//cannot set rtc time
-	error_rtc_cannot_get_time,				//cannot get rtc time
-	error_rtc_invalid_date_format,			//tried to set rtc with invalid date format
-	error_rtc_cannot_set_date,				//cannot set rtc date
-	error_rtc_cannot_get_date,				//cannot get rtc date
+	error_rtc_invalid_time_format,				//tried to set rtc with invalid time format
+	error_rtc_cannot_set_time,					//cannot set rtc time
+	error_rtc_cannot_get_time,					//cannot get rtc time
+	error_rtc_invalid_date_format,				//tried to set rtc with invalid date format
+	error_rtc_cannot_set_date,					//cannot set rtc date
+	error_rtc_cannot_get_date,					//cannot get rtc date
+	error_rtc_encode_string_too_long,			//encode string too long for timestamp
+	error_rtc_cannot_decode_time,				//cannot decode time from string
 
-	error_filter_fan_invalid_type,			//invalid enum used
+	error_filter_fan_invalid_type,				//invalid enum used
+
+	error_sd_cannot_mount,						//cannot mount
+	error_sd_cannot_unmount,					//cannot unmount
+	error_sd_cannot_open_file,					//cannot open file
+	error_sd_cannot_write_file,					//cannot write file
+	error_sd_cannot_read_file,					//cannot read file
+	error_sd_cannot_lseek_file,					//cannot lseek file
+	error_sd_cannot_truncate_file,				//cannot truncate file
+	error_sd_cannot_delete_file,				//cannot delete file
+	error_sd_cannot_close_file,					//cannot close file
+	error_sd_cannot_open_dir,					//cannot open dir
+	error_sd_cannot_read_dir,					//cannot read dir
+	error_sd_cannot_close_dir, 					//cannot close dir
+
+	error_storage_invalid_type,					//invalid enum used
+	error_storage_file_already_openend,			//there is already a file opened, cannot open another one
+	error_storage_line_too_long_encode,			//line too long to encode
+	error_storage_format_too_long,				//format string is too long for storage
+	error_storage_error_too_long_encode,		//error line too long to encode
+	error_storage_filterFan_too_long_encode,	//filterFan line too long to encode
+	error_storage_ledLight_too_long_encode,		//ledLight line too long to encode
+	error_storage_filterFan_cannot_decode,		//filterFan line cannot be decoded
+	error_storage_ledLight_cannot_decode,		//ledLight line cannot be decoded
 
 
 	error_max
