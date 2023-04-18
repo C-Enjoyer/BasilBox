@@ -34,6 +34,9 @@ typedef struct filterFan_storageStruct
 
 } filterFan_storageStruct_t;
 
+void filterFan_init(void);
+void filterFan_mainLoop(void);
+void filterFan_timer1ms(void);
 void filterFan_set(filterFan_state_t newState);
 
 #endif /* INC_FILTER_FAN_H_ */
