@@ -22,12 +22,16 @@
 
 /* USER CODE BEGIN 0 */
 #include "error.h"
+#include "led_light.h"
 #include <string.h>
 #include <stdio.h>
 
 bool _rtc_isTime(rtc_time_t time);
 bool _rtc_isDate(rtc_date_t date);
 bool _rtc_isTs(rtc_ts_t ts);
+uint32_t _rtc_getSecondsFromTime(rtc_time_t time);
+void _rtc_timeChanged(rtc_time_t time);
+void _rtc_dateChanged(rtc_date_t time);
 /* USER CODE END 0 */
 
 RTC_HandleTypeDef hrtc;
@@ -42,6 +46,7 @@ void MX_RTC_Init(void)
 
   RTC_TimeTypeDef sTime = {0};
   RTC_DateTypeDef sDate = {0};
+  RTC_AlarmTypeDef sAlarm = {0};
 
   /* USER CODE BEGIN RTC_Init 1 */
 
@@ -85,8 +90,26 @@ void MX_RTC_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN RTC_Init 2 */
 
+  /** Enable the Alarm A
+  */
+  sAlarm.AlarmTime.Hours = 23;
+  sAlarm.AlarmTime.Minutes = 59;
+  sAlarm.AlarmTime.Seconds = 0;
+  sAlarm.AlarmTime.SubSeconds = 0;
+  sAlarm.AlarmTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+  sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
+  sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
+  sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
+  sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
+  sAlarm.AlarmDateWeekDay = 1;
+  sAlarm.Alarm = RTC_ALARM_A;
+  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RTC_Init 2 */
+	rtc_stopAlarm(RTC_ALARM_A);
   /* USER CODE END RTC_Init 2 */
 
 }
@@ -104,7 +127,7 @@ void HAL_RTC_MspInit(RTC_HandleTypeDef* rtcHandle)
   /** Initializes the peripherals clock
   */
     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
-    PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
+    PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
       Error_Handler();
@@ -112,6 +135,10 @@ void HAL_RTC_MspInit(RTC_HandleTypeDef* rtcHandle)
 
     /* RTC clock enable */
     __HAL_RCC_RTC_ENABLE();
+
+    /* RTC interrupt Init */
+    HAL_NVIC_SetPriority(RTC_Alarm_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(RTC_Alarm_IRQn);
   /* USER CODE BEGIN RTC_MspInit 1 */
 
   /* USER CODE END RTC_MspInit 1 */
@@ -128,6 +155,9 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
   /* USER CODE END RTC_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_RTC_DISABLE();
+
+    /* RTC interrupt Deinit */
+    HAL_NVIC_DisableIRQ(RTC_Alarm_IRQn);
   /* USER CODE BEGIN RTC_MspDeInit 1 */
 
   /* USER CODE END RTC_MspDeInit 1 */
@@ -156,16 +186,27 @@ void rtc_setTime(rtc_time_t time)
 	if(HAL_RTC_SetTime(&hrtc, &rtcTime, RTC_FORMAT_BIN) != HAL_OK)
 	{
 		error_handle(error_rtc_cannot_set_time, error_soft);
+		return;
 	}
+	
+	_rtc_timeChanged(time);
 }
 
 void rtc_getTime(rtc_time_t* time)
 {
 	RTC_TimeTypeDef rtcTime;
+	RTC_DateTypeDef rtcDate;
 
 	if (HAL_RTC_GetTime(&hrtc, &rtcTime, RTC_FORMAT_BIN) != HAL_OK)
 	{
 		error_handle(error_rtc_cannot_get_time, error_soft);
+		return;
+	}
+	
+	// have to read date, too, because of a bug in ST's code!
+	if (HAL_RTC_GetDate(&hrtc, &rtcDate, RTC_FORMAT_BIN) != HAL_OK)
+	{
+		error_handle(error_rtc_cannot_get_date, error_soft);
 		return;
 	}
 
@@ -190,7 +231,10 @@ void rtc_setDate(rtc_date_t date)
 	if(HAL_RTC_SetDate(&hrtc, &rtcDate, RTC_FORMAT_BIN) != HAL_OK)
 	{
 		error_handle(error_rtc_cannot_set_date, error_soft);
+		return;
 	}
+	
+	_rtc_dateChanged(date);
 }
 
 void rtc_getDate(rtc_date_t* date)
@@ -218,6 +262,42 @@ void rtc_getTs(rtc_ts_t* ts)
 {
 	rtc_getTime(&ts->time);
 	rtc_getDate(&ts->date);
+}
+
+// time ... either RTC_ALARM_A or RTC_ALARM_B
+void rtc_setTimeAlarm(rtc_time_t time, uint32_t alarm)
+{
+	if (!_rtc_isTime(time))
+	{
+		return;
+	}
+	
+	RTC_AlarmTypeDef sAlarm = { 0 };
+	
+	sAlarm.AlarmTime.Hours = time.hour;
+	sAlarm.AlarmTime.Minutes = time.min;
+	sAlarm.AlarmTime.Seconds = time.sec;
+	sAlarm.AlarmTime.SubSeconds = 0;
+	sAlarm.AlarmTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+	sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
+	sAlarm.AlarmMask = RTC_ALARMMASK_DATEWEEKDAY;
+	sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
+	sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
+	sAlarm.AlarmDateWeekDay = 1;
+	sAlarm.Alarm = alarm;
+	
+	if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BIN) != HAL_OK)
+	{
+		error_handle(error_rtc_cannot_set_alarm, error_soft);
+	}
+}
+
+void rtc_stopAlarm(uint32_t alarm)
+{
+	if (HAL_RTC_DeactivateAlarm(&hrtc, alarm) != HAL_OK)
+	{
+		error_handle(error_rtc_cannot_stop_alarm, error_soft);
+	}
 }
 
 void rtc_getTsAsString(char* string)
@@ -286,6 +366,26 @@ bool rtc_timeFromString(rtc_time_t* time, char* string)
 	return true;
 }
 
+bool rtc_isTimeInBetween(rtc_time_t start, rtc_time_t end, rtc_time_t now)
+{
+	uint32_t startS = _rtc_getSecondsFromTime(start);
+	uint32_t endS = _rtc_getSecondsFromTime(end);
+	uint32_t nowS = _rtc_getSecondsFromTime(now);
+	
+	if (endS > startS) // not over midnight
+	{
+		return ((startS <= nowS) && (nowS < endS));
+	}
+	else if(endS < startS) //over midnight
+	{
+		return ((startS <= nowS) || (nowS < endS));
+	}
+	else
+	{
+		return false;
+	}
+}
+
 bool _rtc_isTime(rtc_time_t time)
 {
 	if (!IS_RTC_HOUR24(time.hour) || !IS_RTC_MINUTES(time.min) || !IS_RTC_SECONDS(time.sec))
@@ -316,6 +416,26 @@ bool _rtc_isTs(rtc_ts_t ts)
 	}
 
 	return true;
+}
+
+uint32_t _rtc_getSecondsFromTime(rtc_time_t time)
+{
+	return time.hour * 3600 + time.min * 60 + time.sec;
+}
+
+void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
+{
+	ledLight_rtcAlarm();
+}
+
+void _rtc_timeChanged(rtc_time_t time)
+{
+	ledLight_rtcTimeChanged();
+}
+
+void _rtc_dateChanged(rtc_date_t time)
+{
+	
 }
 
 /* USER CODE END 1 */
