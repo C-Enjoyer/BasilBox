@@ -30,7 +30,7 @@
 /* USER CODE BEGIN Includes */
 #include "led.h"
 #include "filter_fan.h"
-#include "volreg.h"
+#include "led_light.h"
 #include "com.h"
 #include "sd.h"
 #include "error.h"
@@ -109,9 +109,9 @@ int main(void)
     com_init();
     usart_init();
     tim_init();
-    volreg_init();
     debug_init();
 	filterFan_init();
+	ledLight_init();
 
     led_blink(200, 800);
   /* USER CODE END 2 */
@@ -124,6 +124,7 @@ int main(void)
         com_mainLoop();
         debug_mainLoop();
 	    filterFan_mainLoop();
+	    ledLight_mainLoop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

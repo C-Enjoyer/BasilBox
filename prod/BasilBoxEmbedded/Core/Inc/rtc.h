@@ -63,6 +63,8 @@ void rtc_setDate(rtc_date_t date);
 void rtc_getDate(rtc_date_t* date);
 void rtc_setTs(rtc_ts_t ts);
 void rtc_getTs(rtc_ts_t* ts);
+void rtc_setTimeAlarm(rtc_time_t time, uint32_t alarm);
+void rtc_stopAlarm(uint32_t alarm);
 void rtc_getTsAsString(char* string);
 bool rtc_tsToString(char* string, rtc_ts_t ts);
 bool rtc_timeToString(char* string, rtc_time_t time);

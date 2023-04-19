@@ -14,7 +14,7 @@
 typedef struct ledLight_interval
 {
 	double percent;
-	rtc_time_t dayTime;
+	rtc_time_t dayTime; //end time
 
 } ledLight_interval_t;
 
@@ -25,6 +25,9 @@ typedef struct ledLight_storageStruct
 
 } ledLight_storageStruct_t;
 
+void ledLight_init(void);
+void ledLight_mainLoop(void);
 void ledLight_setBrightness(double percent);
+void ledLight_rtcAlarm(void);
 
 #endif /* INC_LED_LIGHT_H_ */

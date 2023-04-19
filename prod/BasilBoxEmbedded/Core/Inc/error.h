@@ -39,6 +39,8 @@ typedef enum error_code
 	error_rtc_cannot_get_date,					//cannot get rtc date
 	error_rtc_encode_string_too_long,			//encode string too long for timestamp
 	error_rtc_cannot_decode_time,				//cannot decode time from string
+	error_rtc_cannot_set_alarm,					//cannot set alarm
+	error_rtc_cannot_stop_alarm,				//cannot stop alarm
 
 	error_filter_fan_invalid_type,				//invalid enum used
 
