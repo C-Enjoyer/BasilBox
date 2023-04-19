@@ -28,6 +28,7 @@ typedef struct ledLight_storageStruct
 void ledLight_init(void);
 void ledLight_mainLoop(void);
 void ledLight_setBrightness(double percent);
+void ledLight_rtcTimeChanged(void);
 void ledLight_rtcAlarm(void);
 
 #endif /* INC_LED_LIGHT_H_ */

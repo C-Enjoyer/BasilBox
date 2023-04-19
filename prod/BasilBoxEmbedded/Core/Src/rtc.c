@@ -29,6 +29,9 @@
 bool _rtc_isTime(rtc_time_t time);
 bool _rtc_isDate(rtc_date_t date);
 bool _rtc_isTs(rtc_ts_t ts);
+uint32_t _rtc_getSecondsFromTime(rtc_time_t time);
+void _rtc_timeChanged(rtc_time_t time);
+void _rtc_dateChanged(rtc_date_t time);
 /* USER CODE END 0 */
 
 RTC_HandleTypeDef hrtc;
@@ -124,7 +127,7 @@ void HAL_RTC_MspInit(RTC_HandleTypeDef* rtcHandle)
   /** Initializes the peripherals clock
   */
     PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
-    PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
+    PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
       Error_Handler();
@@ -183,16 +186,27 @@ void rtc_setTime(rtc_time_t time)
 	if(HAL_RTC_SetTime(&hrtc, &rtcTime, RTC_FORMAT_BIN) != HAL_OK)
 	{
 		error_handle(error_rtc_cannot_set_time, error_soft);
+		return;
 	}
+	
+	_rtc_timeChanged(time);
 }
 
 void rtc_getTime(rtc_time_t* time)
 {
 	RTC_TimeTypeDef rtcTime;
+	RTC_DateTypeDef rtcDate;
 
 	if (HAL_RTC_GetTime(&hrtc, &rtcTime, RTC_FORMAT_BIN) != HAL_OK)
 	{
 		error_handle(error_rtc_cannot_get_time, error_soft);
+		return;
+	}
+	
+	// have to read date, too, because of a bug in ST's code!
+	if (HAL_RTC_GetDate(&hrtc, &rtcDate, RTC_FORMAT_BIN) != HAL_OK)
+	{
+		error_handle(error_rtc_cannot_get_date, error_soft);
 		return;
 	}
 
@@ -217,7 +231,10 @@ void rtc_setDate(rtc_date_t date)
 	if(HAL_RTC_SetDate(&hrtc, &rtcDate, RTC_FORMAT_BIN) != HAL_OK)
 	{
 		error_handle(error_rtc_cannot_set_date, error_soft);
+		return;
 	}
+	
+	_rtc_dateChanged(date);
 }
 
 void rtc_getDate(rtc_date_t* date)
@@ -349,6 +366,26 @@ bool rtc_timeFromString(rtc_time_t* time, char* string)
 	return true;
 }
 
+bool rtc_isTimeInBetween(rtc_time_t start, rtc_time_t end, rtc_time_t now)
+{
+	uint32_t startS = _rtc_getSecondsFromTime(start);
+	uint32_t endS = _rtc_getSecondsFromTime(end);
+	uint32_t nowS = _rtc_getSecondsFromTime(now);
+	
+	if (endS > startS) // not over midnight
+	{
+		return ((startS <= nowS) && (nowS < endS));
+	}
+	else if(endS < startS) //over midnight
+	{
+		return ((startS <= nowS) || (nowS < endS));
+	}
+	else
+	{
+		return false;
+	}
+}
+
 bool _rtc_isTime(rtc_time_t time)
 {
 	if (!IS_RTC_HOUR24(time.hour) || !IS_RTC_MINUTES(time.min) || !IS_RTC_SECONDS(time.sec))
@@ -381,9 +418,24 @@ bool _rtc_isTs(rtc_ts_t ts)
 	return true;
 }
 
+uint32_t _rtc_getSecondsFromTime(rtc_time_t time)
+{
+	return time.hour * 3600 + time.min * 60 + time.sec;
+}
+
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
 {
 	ledLight_rtcAlarm();
+}
+
+void _rtc_timeChanged(rtc_time_t time)
+{
+	ledLight_rtcTimeChanged();
+}
+
+void _rtc_dateChanged(rtc_date_t time)
+{
+	
 }
 
 /* USER CODE END 1 */

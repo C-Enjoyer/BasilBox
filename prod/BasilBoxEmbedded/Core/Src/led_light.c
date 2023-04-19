@@ -78,6 +78,12 @@ void _ledLight_checkCounterCallback(void)
 	}
 }
 
+void ledLight_rtcTimeChanged(void)
+{
+	_ledLight_stop();
+	_ledLight_start();
+}
+
 void ledLight_rtcAlarm(void)
 {
 	ledLight_gotRtcAlarm = true;
@@ -97,8 +103,19 @@ void _ledLight_restart(void)
 
 void _ledLight_start(void)
 {
-	ledLight_isOffInterval = false;
-	_ledLight_startInterval(ledLight_settings.onInterval);
+	rtc_time_t now;
+	rtc_getTime(&now);
+	
+	if (rtc_isTimeInBetween(ledLight_settings.offInterval.dayTime, ledLight_settings.onInterval.dayTime, now))
+	{
+		ledLight_isOffInterval = false;
+		_ledLight_startInterval(ledLight_settings.onInterval);
+	}
+	else
+	{
+		ledLight_isOffInterval = true;
+		_ledLight_startInterval(ledLight_settings.offInterval);
+	}
 }
 
 void _ledLight_stop(void)

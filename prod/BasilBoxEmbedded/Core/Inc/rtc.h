@@ -69,6 +69,7 @@ void rtc_getTsAsString(char* string);
 bool rtc_tsToString(char* string, rtc_ts_t ts);
 bool rtc_timeToString(char* string, rtc_time_t time);
 bool rtc_timeFromString(rtc_time_t* time, char* string);
+bool rtc_isTimeInBetween(rtc_time_t start, rtc_time_t end, rtc_time_t now);
 
 /* USER CODE END Prototypes */
 
