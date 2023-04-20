@@ -23,6 +23,7 @@
 /* USER CODE BEGIN 0 */
 #include "error.h"
 #include "led_light.h"
+#include "storage.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -165,6 +166,18 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
 }
 
 /* USER CODE BEGIN 1 */
+
+void rtc_init(void)
+{
+	rtc_storageStruct_t settings;
+	
+	if (storage_read(storage_rtc, &settings))
+	{
+		storage_delete(storage_rtc);
+		rtc_setTs(settings.ts);
+	}
+}
+
 void rtc_setTime(rtc_time_t time)
 {
 	if(!_rtc_isTime(time))
@@ -323,6 +336,26 @@ bool rtc_tsToString(char* string, rtc_ts_t ts)
 	{
 		string[0] = '\0';
 		error_handle(error_rtc_encode_string_too_long, error_soft);
+		return false;
+	}
+
+	return true;
+}
+
+bool rtc_tsFromString(rtc_ts_t* ts, char* string)
+{
+	int ret = sscanf(string, "%02d:%02d:%02d %02d.%02d.%02d", (int*) &(ts->time.hour), (int*) &(ts->time.min), (int*) &(ts->time.sec), (int*) &(ts->date.day), (int*) &(ts->date.month), (int*) &(ts->date.year));
+
+	if (ret < 6 || !_rtc_isTs(*ts)) // 6 parameters to read
+	{
+		ts->time.hour = 0;
+		ts->time.min = 0;
+		ts->time.sec = 0;
+		ts->date.day = 0;
+		ts->date.month = 0;
+		ts->date.year = 0;
+		
+		error_handle(error_rtc_cannot_decode_ts, error_soft);
 		return false;
 	}
 

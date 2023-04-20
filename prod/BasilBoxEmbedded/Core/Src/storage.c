@@ -9,6 +9,7 @@
 #include "error.h"
 #include "filter_fan.h"
 #include "led_light.h"
+#include "rtc.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -21,6 +22,7 @@ bool _storage_encodeLedLightSettings(char* line, storage_type_t type, void *valu
 bool _storage_decodeLine(char* line, storage_type_t type, void *value);
 bool _storage_decodeFilterFanSettings(char* line, storage_type_t type, void *value);
 bool _storage_decodeLedLightSettings(char* line, storage_type_t type, void *value);
+bool _storage_decodeRtcSettings(char* line, storage_type_t type, void *value);
 char* _storage_getFormatString(const char* format);
 
 #define X(type, filename, openFlags) filename,
@@ -41,49 +43,51 @@ bool storage_fileOpened = false;
 char storage_formatString[STORAGE_MAX_FORMAT_STRING_LEN + 1];
 
 
-void storage_save(storage_type_t type, void *value)
+bool storage_save(storage_type_t type, void *value)
 {
 	if(type >= storage_type_max)
 	{
 		error_handle(error_storage_invalid_type, error_soft);
-		return;
+		return false;
 	}
 
 	if(!_storage_encodeLine(storage_line, type, value))
 	{
 		error_handle(error_storage_line_too_long_encode, error_soft);
-		return;
+		return false;
 	}
 
 	if(storage_fileOpened)
 	{
 		error_handle(error_storage_file_already_openend, error_soft);
-		return;
+		return false;
 	}
 
 	if(!sd_fOpen(&storage_file, storage_filename[type], storage_openFlags[type]))
 	{
-		return;
+		return false;
 	}
 
 	storage_fileOpened = true;
 
 	if(!sd_fWrite(&storage_file, storage_line))
 	{
-		return;
+		return false;
 	}
 
 	if(!sd_fTruncate(&storage_file))
 	{
-		return;
+		return false;
 	}
 
 	if(!sd_fClose(&storage_file))
 	{
-		return;
+		return false;
 	}
 
 	storage_fileOpened = false;
+	
+	return true;
 }
 
 bool storage_read(storage_type_t type, void *value)
@@ -124,6 +128,28 @@ bool storage_read(storage_type_t type, void *value)
 
 	storage_fileOpened = false;
 
+	return true;
+}
+
+bool storage_delete(storage_type_t type)
+{
+	if (type >= storage_type_max)
+	{
+		error_handle(error_storage_invalid_type, error_soft);
+		return false;
+	}
+
+	if (storage_fileOpened)
+	{
+		error_handle(error_storage_file_already_openend, error_soft);
+		return false;
+	}
+	
+	if (!sd_fDelete(storage_filename[type]))
+	{
+		return false;	
+	}
+	
 	return true;
 }
 
@@ -226,6 +252,8 @@ bool _storage_decodeLine(char* line, storage_type_t type, void *value)
 		break;
 		case storage_ledLight: ret = _storage_decodeLedLightSettings(line, type, value);
 		break;
+		case storage_rtc: ret = _storage_decodeRtcSettings(line, type, value);
+		break;
 		default: ret = false;
 		break;
 	}
@@ -273,6 +301,21 @@ bool _storage_decodeLedLightSettings(char* line, storage_type_t type, void *valu
 	return true;
 }
 
+bool _storage_decodeRtcSettings(char* line, storage_type_t type, void *value)
+{
+	rtc_storageStruct_t* settings = (rtc_storageStruct_t*) value;
+
+	int ret = sscanf(line, _storage_getFormatString("%[^\n]"), storage_ts[0]);
+
+	if (ret < 1 || // 1 parameter to read
+			!rtc_tsFromString(&(settings->ts), storage_ts[0]))
+	{
+		error_handle(error_storage_rtc_cannot_decode, error_soft);
+		return false;
+	}
+
+	return true;
+}
 
 char* _storage_getFormatString(const char* format)
 {

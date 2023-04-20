@@ -52,11 +52,17 @@ typedef struct rtc_ts
 	rtc_time_t time;
 	rtc_date_t date;
 }rtc_ts_t;
+	
+typedef struct rtc_storageStruct
+{
+	rtc_ts_t ts;
+} rtc_storageStruct_t;
 /* USER CODE END Private defines */
 
 void MX_RTC_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+void rtc_init(void);
 void rtc_setTime(rtc_time_t time);
 void rtc_getTime(rtc_time_t* time);
 void rtc_setDate(rtc_date_t date);
@@ -67,6 +73,7 @@ void rtc_setTimeAlarm(rtc_time_t time, uint32_t alarm);
 void rtc_stopAlarm(uint32_t alarm);
 void rtc_getTsAsString(char* string);
 bool rtc_tsToString(char* string, rtc_ts_t ts);
+bool rtc_tsFromString(rtc_ts_t* ts, char* string);
 bool rtc_timeToString(char* string, rtc_time_t time);
 bool rtc_timeFromString(rtc_time_t* time, char* string);
 bool rtc_isTimeInBetween(rtc_time_t start, rtc_time_t end, rtc_time_t now);
