@@ -106,6 +106,7 @@ int main(void)
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
     sd_init();
+	rtc_init();
     com_init();
     usart_init();
     tim_init();

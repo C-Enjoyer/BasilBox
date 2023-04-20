@@ -23,7 +23,7 @@
 #define _LED_LIGHT_DEFAULT_SETTINGS		{ { 0.75, { 21, 0, 0 } }, { 0, { 3, 0, 0 } } }
 
 double _ledLight_convertLinear(double percent);
-void _ledLight_checkCounterCallback(void);
+void _ledLight_checkAlarm(void);
 void _ledLight_startInterval(ledLight_interval_t interval);
 void _ledLight_restart(void);
 void _ledLight_start(void);
@@ -36,15 +36,24 @@ ledLight_storageStruct_t ledLight_settings = _LED_LIGHT_DEFAULT_SETTINGS;
 bool ledLight_isOffInterval = false;
 bool ledLight_gotRtcAlarm = false;
 
+bool ledLight_isInitialized = false;
+
 void ledLight_init(void)
 {
+	if (ledLight_isInitialized)
+	{
+		return;	
+	}
+	
 	volreg_init();
 	_ledLight_restart();
+	
+	ledLight_isInitialized = true;
 }
 
 void ledLight_mainLoop(void)
 {
-	_ledLight_checkCounterCallback();
+	_ledLight_checkAlarm();
 }
 
 void ledLight_setBrightness(double percent)
@@ -57,7 +66,7 @@ double _ledLight_convertLinear(double percent)
 	return (percent == 0) ? (0) : (percent * _LED_LIGHT_K + _LED_LIGHT_D);
 }
 
-void _ledLight_checkCounterCallback(void)
+void _ledLight_checkAlarm(void)
 {
 	if (!ledLight_gotRtcAlarm)
 	{
@@ -80,6 +89,11 @@ void _ledLight_checkCounterCallback(void)
 
 void ledLight_rtcTimeChanged(void)
 {
+	if (!ledLight_isInitialized)
+	{
+		return;
+	}
+
 	_ledLight_stop();
 	_ledLight_start();
 }

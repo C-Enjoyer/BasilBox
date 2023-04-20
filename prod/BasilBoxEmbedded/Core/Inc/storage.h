@@ -20,14 +20,16 @@
 X(storage_error, "Errorlog.txt", FA_OPEN_APPEND | FA_WRITE) \
 X(storage_filterFan, "FilterFan.txt", FA_OPEN_ALWAYS | FA_WRITE) \
 X(storage_ledLight, "LedLight.txt", FA_OPEN_ALWAYS | FA_WRITE) \
+X(storage_rtc, "rtc.txt", FA_READ) \
 X(storage_type_max, "", FA_READ)
 
 #define X(type, filename, openFlags) type,
 typedef enum storage_type { storage_types } storage_type_t;
 #undef X
 
-void storage_save(storage_type_t type, void *value);
+bool storage_save(storage_type_t type, void *value);
 bool storage_read(storage_type_t type, void *value);
+bool storage_delete(storage_type_t type);
 
 
 #endif /* INC_STORAGE_H_ */
