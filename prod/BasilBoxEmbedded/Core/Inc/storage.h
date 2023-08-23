@@ -30,6 +30,7 @@ typedef enum storage_type { storage_types } storage_type_t;
 bool storage_save(storage_type_t type, void *value);
 bool storage_read(storage_type_t type, void *value);
 bool storage_delete(storage_type_t type);
+oasch();
 
 
 #endif /* INC_STORAGE_H_ */
